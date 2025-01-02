@@ -11,16 +11,16 @@ const ComingSoon = () => {
               alt="logo"
               fill
               className="object-contain"
+              sizes="100%"
             />
           </div>
         </div>
 
         <h1 className="mt-5 text-3xl font-bold text-gray-800">
-          {' '}
-          Wisdom House Blog{' '}
+          Wisdom House Blog
         </h1>
 
-        <p className="mt-4 text-lg text-gray-600"> Coming Soon </p>
+        <p className="mt-4 text-lg text-gray-600">Coming Soon</p>
       </div>
     </div>
   );
