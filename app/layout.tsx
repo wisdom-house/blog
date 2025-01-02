@@ -1,20 +1,22 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import { type Metadata } from 'next';
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+import { Montserrat } from 'next/font/google';
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+import { pageTitle } from '@/utils/pageTitle';
+
+import '@/styles/globals.css';
+
+const font = Montserrat({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
 });
 
 export const metadata: Metadata = {
-  title: "Wisdom House Blog",
-  description: "Stay tuned! Wisdom House Blog is coming soon with inspiring content and valuable insights.",
+  title: pageTitle(),
+
+  description:
+    'Stay informed and entertained with Wisdom House Blog! Discover the latest news, trending entertainment stories, captivating gossip, lifestyle tips, educational insights, and more. Your one-stop destination for diverse and engaging content.',
+
   icons: '/assets/logo.png',
 };
 
@@ -25,11 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
+      <body className={`${font.className} antialiased`}>{children}</body>
     </html>
   );
 }

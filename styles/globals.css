@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --max-width: 1300px;
+    --extra-width: calc(100% - var(--max-width));
+    --full-bleed: calc(calc(var(--extra-width) / 2) + 2rem);
+    --radius: 0.5rem;
+  }
+
+  html {
+    @apply scroll-smooth antialiased;
+  }
+
+  body {
+    @apply text-black font-normal text-a-12 bg-app-gray-50 md:text-a-14 leading-[1.5];
+  }
+
+  .app-padding {
+    @apply px-6 md:px-10 xl:px-[--full-bleed];
+  }
+}
