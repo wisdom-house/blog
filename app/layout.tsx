@@ -1,14 +1,15 @@
 import { type Metadata } from 'next';
 
-import { Montserrat } from 'next/font/google';
+import { Open_Sans } from 'next/font/google';
 
 import { pageTitle } from '@/utils/pageTitle';
 
 import '@/styles/globals.css';
+import { ThemeProvider } from 'next-themes';
 
-const font = Montserrat({
+const font = Open_Sans({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
+  weight: ['300', '400', '500', '700'],
 });
 
 export const metadata: Metadata = {
@@ -26,8 +27,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${font.className} antialiased`}>{children}</body>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${font.className} antialiased`}>
+        <ThemeProvider attribute="class" enableSystem defaultTheme="light">
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }
