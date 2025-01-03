@@ -12,7 +12,7 @@ const Search = ({ iconButton = false }: SearchProps) => {
     <div className="w-full h-max">
       <div
         className={cn(
-          'flex-1 flex gap-3 w-full overflow-hidden rounded items-center border bg-white shadow-app-shadow mx-auto',
+          'flex-1 flex gap-3 w-full overflow-hidden rounded items-center border bg-app-foreground shadow-app-shadow mx-auto',
           iconButton && 'px-2 gap-4'
         )}
       >
@@ -20,7 +20,7 @@ const Search = ({ iconButton = false }: SearchProps) => {
           type="search"
           name=""
           id="search"
-          className="flex-1 p-2 outline-none"
+          className="flex-1 p-2 outline-none bg-transparent"
           placeholder="Search posts"
         />
 
