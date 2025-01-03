@@ -35,7 +35,7 @@ const socials = [
 
 const Footer = () => {
   return (
-    <footer className="app-padding py-5 bg-black flex justify-between gap-6 flex-wrap text-white">
+    <footer className="app-padding py-5 bg-app-black text-app-white flex justify-between gap-6 flex-wrap">
       <p className="">
         &copy;
         {` ${new Date().getFullYear()} ${BRAND_NAME}. All rights reserved.`}

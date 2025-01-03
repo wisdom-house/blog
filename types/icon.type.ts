@@ -6,7 +6,10 @@ export type IconName =
   | 'twitter'
   | 'instagram'
   | 'tiktok'
-  | 'linkedin';
+  | 'linkedin'
+  | 'arrow-right'
+  | 'sun'
+  | 'moon';
 
 export const icons: IconName[] = [
   'menu',
@@ -17,4 +20,7 @@ export const icons: IconName[] = [
   'instagram',
   'tiktok',
   'linkedin',
+  'arrow-right',
+  'sun',
+  'moon',
 ];
