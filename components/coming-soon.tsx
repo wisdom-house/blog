@@ -1,3 +1,4 @@
+import { BRAND_NAME } from '@/utils/constants';
 import Image from 'next/image';
 
 const ComingSoon = () => {
@@ -16,8 +17,8 @@ const ComingSoon = () => {
           </div>
         </div>
 
-        <h1 className="mt-5 text-3xl font-bold text-gray-800">
-          Wisdom House Blog
+        <h1 className="mt-5 text-3xl font-bold capitalize text-gray-800">
+          {BRAND_NAME} Blog
         </h1>
 
         <p className="mt-4 text-lg text-gray-600">Coming Soon</p>

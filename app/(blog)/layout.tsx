@@ -1,3 +1,4 @@
+import Footer from '@/components/footer';
 import Header from '@/components/header';
 
 export const dynamic = 'force-dynamic';
@@ -14,6 +15,8 @@ const PrimaryLayout = async ({
       <Header />
 
       <main>{children}</main>
+
+      <Footer />
     </>
   );
 };
