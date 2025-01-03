@@ -1,5 +1,12 @@
-import ComingSoon from '@/components/coming-soon';
+import BlogPostSection from '@/components/blogs-post-section';
+import Hero from '@/components/hero';
 
 export default function Home() {
-  return <ComingSoon />;
+  return (
+    <>
+      <Hero />
+
+      <BlogPostSection />
+    </>
+  );
 }
