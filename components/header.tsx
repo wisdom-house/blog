@@ -55,7 +55,7 @@ const Header = () => {
   }, [pathname]);
 
   return (
-    <header className="fixed top-0 left-0 w-screen backdrop-blur-3xl shadow-lg bg-app-foreground lg:h-[100px] z-5 py-2 lmd:pb-0">
+    <header className="sticky top-0 left-0 w-screen backdrop-blur-3xl shadow-lg bg-app-foreground lg:h-[100px] z-5 py-2 lmd:pb-0">
       <nav className="app-padding flex justify-between items-center">
         <Logo />
 
