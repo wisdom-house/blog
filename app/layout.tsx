@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   icons: '/assets/logo.png',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -29,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${font.className} antialiased`}>
-        <ThemeProvider attribute="class" enableSystem defaultTheme="light">
+        <ThemeProvider attribute="class" enableSystem>
           {children}
         </ThemeProvider>
       </body>

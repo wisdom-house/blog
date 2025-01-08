@@ -9,7 +9,8 @@ export type IconName =
   | 'linkedin'
   | 'arrow-right'
   | 'sun'
-  | 'moon';
+  | 'moon'
+  | 'chevron-right';
 
 export const icons: IconName[] = [
   'menu',
@@ -23,4 +24,5 @@ export const icons: IconName[] = [
   'arrow-right',
   'sun',
   'moon',
+  'chevron-right',
 ];

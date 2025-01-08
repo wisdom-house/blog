@@ -7,11 +7,18 @@ import { useEffect, useState } from 'react';
 import { Autoplay } from 'swiper/modules';
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
 
+import { BlogPostCardProps } from './cards/blog-post-card';
 import SvgIcon from './icon';
 
+import { routes } from '@/lib/routes';
+import { urlFor } from '@/sanity/lib/image';
 import { DATE_FORMAT } from '@/utils/constants';
 
 import 'swiper/css';
+
+interface HeroProps {
+  posts: BlogPostCardProps[];
+}
 
 const NavButton = ({ direction }: { direction: 'next' | 'prev' }) => {
   const swiper = useSwiper();
@@ -74,7 +81,7 @@ const Pagination = ({ totalSlides }: { totalSlides: number }) => {
   );
 };
 
-const Hero = () => {
+const Hero = ({ posts }: HeroProps) => {
   return (
     <Swiper
       modules={[Autoplay]}
@@ -90,14 +97,19 @@ const Hero = () => {
       <NavButton direction="prev" />
       <NavButton direction="next" />
 
+      <div className="absolute top-0 section-padding z-1">
+        <p className="bg-red-700  w-max py-2 px-5 text-white rounded font-bold z-1">
+          LATEST
+        </p>
+      </div>
       <div className="relative">
-        {Array.from({ length: 2 }).map((_, i) => (
+        {posts.map(({ title, mainImage, excerpt, slug, date, author }, i) => (
           <SwiperSlide key={i}>
-            <section className="section-padding text-left min-h-[500px] md:min-h-[600px] flex flex-col justify-end">
-              <div className="absolute top-0 left-0 -z-1 w-full h-full aspect-square">
+            <section className="section-padding text-left min-h-[500px] flex flex-col justify-end">
+              <div className="absolute top-0 left-0 -z-1 w-full h-full">
                 <Image
-                  src={`https://picsum.photos/19${i + 8}0/208${i}`}
-                  alt="hero background"
+                  src={urlFor(mainImage).url()}
+                  alt={mainImage.alt}
                   sizes="100%"
                   fill
                   className="object-cover brightness-[0.3] bg-primary/80 opacity-95"
@@ -111,19 +123,17 @@ const Hero = () => {
                     {'CATEGORY'}
                   </p>
 
-                  <p className="text-a-18">{'This is the blog title'}</p>
+                  <p className="text-a-18">{title}</p>
 
-                  <p className=" line-clamp-3 my-2 max-w-[370px]">
-                    {`WordPress News Magazine Charts the Most Chic and Fashionable Women of New York City WordPress News Magazine Charts the Most Chic and Fashionable Women of New York City`}
-                  </p>
+                  <p className=" line-clamp-3 my-2 max-w-[370px]">{excerpt}</p>
 
                   <p className="flex gap-[1ch] items-center my-4 text-a-12 font-light">
-                    <span>{'Paul Oluwatoni'}</span>
+                    <span>{author}</span>
                     <span>-</span>
-                    <span>{dayjs().format(DATE_FORMAT)}</span>
+                    <span>{dayjs(date).format(DATE_FORMAT)}</span>
                   </p>
 
-                  <Link href={'#'} className="text-primary w-max">
+                  <Link href={routes.post(slug)} className="text-primary w-max">
                     Read now
                   </Link>
                 </div>
@@ -133,7 +143,7 @@ const Hero = () => {
         ))}
       </div>
 
-      <Pagination totalSlides={2} />
+      <Pagination totalSlides={posts.length} />
     </Swiper>
   );
 };
