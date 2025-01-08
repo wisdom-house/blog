@@ -1,5 +1,5 @@
 import { defineType, defineArrayMember } from 'sanity';
-import { ImageIcon } from '@sanity/icons';
+import { ImageIcon, PlayIcon } from '@sanity/icons';
 
 /**
  * This is the schema type for block content used in the post document type
@@ -31,7 +31,10 @@ export const blockContentType = defineType({
         { title: 'H4', value: 'h4' },
         { title: 'Quote', value: 'blockquote' },
       ],
-      lists: [{ title: 'Bullet', value: 'bullet' }],
+      lists: [
+        { title: 'Bullet', value: 'bullet' },
+        { title: 'Number', value: 'number' },
+      ],
       // Marks let you mark up inline text in the Portable Text Editor
       marks: {
         // Decorators usually describe a single property – e.g. a typographic
@@ -39,6 +42,8 @@ export const blockContentType = defineType({
         decorators: [
           { title: 'Strong', value: 'strong' },
           { title: 'Emphasis', value: 'em' },
+          { title: 'Underline', value: 'underline' },
+          { title: 'Code', value: 'code' },
         ],
         // Annotations can be any object structure – e.g. a link or a footnote.
         annotations: [
@@ -51,6 +56,18 @@ export const blockContentType = defineType({
                 title: 'URL',
                 name: 'href',
                 type: 'url',
+              },
+            ],
+          },
+          {
+            title: 'Tooltip',
+            name: 'tooltip',
+            type: 'object',
+            fields: [
+              {
+                title: 'Text',
+                name: 'text',
+                type: 'string',
               },
             ],
           },
@@ -69,6 +86,20 @@ export const blockContentType = defineType({
           name: 'alt',
           type: 'string',
           title: 'Alternative Text',
+        },
+      ],
+    }),
+
+    defineArrayMember({
+      type: 'object',
+      name: 'embed',
+      title: 'Embedded Media',
+      icon: PlayIcon,
+      fields: [
+        {
+          name: 'url',
+          type: 'url',
+          title: 'Media URL',
         },
       ],
     }),
