@@ -1,4 +1,5 @@
 import { DocumentTextIcon } from '@sanity/icons';
+import dayjs from 'dayjs';
 import { defineArrayMember, defineField, defineType } from 'sanity';
 
 export const postType = defineType({
@@ -40,6 +41,11 @@ export const postType = defineType({
           name: 'alt',
           type: 'string',
           title: 'Alternative text',
+          description: 'Important for SEO and accessibility.',
+          validation: (rule) =>
+            rule
+              .required()
+              .warning('Alt text is crucial for accessibility and SEO.'),
         },
       ],
       validation: (rule) => rule.required(),
@@ -55,7 +61,9 @@ export const postType = defineType({
     defineField({
       name: 'publishedAt',
       type: 'datetime',
+      description: 'Date you want to be displayed on the UI.',
       validation: (rule) => rule.required(),
+      initialValue: dayjs().toISOString(),
     }),
 
     defineField({
@@ -68,9 +76,11 @@ export const postType = defineType({
       name: 'excerpt',
       title: 'Excerpt',
       type: 'text',
+      description: 'Brief summary of post.',
       validation: (rule) => rule.required(),
     }),
   ],
+
   preview: {
     select: {
       title: 'title',

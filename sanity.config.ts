@@ -12,31 +12,9 @@ import { structureTool } from 'sanity/structure';
 import { apiVersion, dataset, projectId } from './sanity/env';
 import { schema } from './sanity/schemaTypes';
 import { structure } from './sanity/structure';
+import { resolve } from './sanity/presentation/resolve';
 
-import {
-  presentationTool,
-  defineDocuments,
-  defineLocations,
-  type DocumentLocation,
-} from 'sanity/presentation';
-
-const homeLocation = {
-  title: 'Home',
-  href: '/',
-} satisfies DocumentLocation;
-
-export function resolveHref(
-  documentType?: string,
-  slug?: string
-): string | undefined {
-  switch (documentType) {
-    case 'post':
-      return slug ? `/posts/${slug}` : undefined;
-    default:
-      console.warn('Invalid document type:', documentType);
-      return undefined;
-  }
-}
+import { presentationTool } from 'sanity/presentation';
 
 export default defineConfig({
   basePath: '/admin',
@@ -46,36 +24,8 @@ export default defineConfig({
   schema,
   plugins: [
     presentationTool({
-      resolve: {
-        mainDocuments: defineDocuments([
-          {
-            route: '/posts/:slug',
-            filter: `_type == "post" && slug.current == $slug`,
-          },
-        ]),
-        locations: {
-          settings: defineLocations({
-            locations: [homeLocation],
-            message: 'This document is used on all pages',
-            tone: 'caution',
-          }),
-          post: defineLocations({
-            select: {
-              title: 'title',
-              slug: 'slug.current',
-            },
-            resolve: (doc) => ({
-              locations: [
-                {
-                  title: doc?.title || 'Untitled',
-                  href: resolveHref('post', doc?.slug)!,
-                },
-                homeLocation,
-              ],
-            }),
-          }),
-        },
-      },
+      resolve,
+
       previewUrl: { previewMode: { enable: '/api/draft-mode/enable' } },
     }),
 
