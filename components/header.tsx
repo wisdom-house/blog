@@ -55,7 +55,7 @@ const Header = () => {
   }, [pathname]);
 
   return (
-    <header className="sticky top-0 left-0 w-screen backdrop-blur-3xl shadow-lg bg-app-foreground lg:h-[100px] z-5 py-2 lmd:pb-0">
+    <header className="sticky top-0 left-0 w-screen backdrop-blur-3xl overflow-x-hidden shadow-lg bg-app-foreground lg:h-[100px] z-5 py-2 lmd:pb-0">
       <nav className="app-padding flex justify-between items-center">
         <Logo />
 
@@ -76,7 +76,7 @@ const Header = () => {
           <div className="hidden lmd:flex max-w-[600px] items-center ml-auto gap-10 justify-self-end flex-1">
             <Search iconButton />
 
-            <ThemeToggler />
+            <ThemeToggler hideOnMobile />
           </div>
 
           <ul className="flex flex-col lmd:flex-row lmd:gap-10 mb-10 lmd:m-0 lmd:items-center  lmd:justify-center ">
@@ -100,7 +100,7 @@ const Header = () => {
         </div>
 
         <div className="flex items-center gap-3 lmd:hidden">
-          <ThemeToggler />
+          <ThemeToggler hideOnDesktop />
 
           <Popover
             trigger={
