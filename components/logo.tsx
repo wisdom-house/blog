@@ -13,7 +13,7 @@ const Logo = ({ leftTop }: LogoProps) => {
       <div className="relative w-full max-w-[100px] md:max-w-[150px] aspect-video h-10 sm:h-[60px]">
         <Image
           src="/assets/logo-nbg.png"
-          alt="barn54"
+          alt="wisdom house logo"
           fill
           sizes="100%"
           className={`object-contain ${leftTop && 'object-left-top'} `}
