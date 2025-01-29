@@ -7,4 +7,14 @@ const TWITTER = '#';
 const FACEBOOK = '#';
 const TIKTOK = '#';
 
-export { INSTAGRAM, TWITTER, FACEBOOK, TIKTOK, BRAND_NAME, DATE_FORMAT };
+const BASE_URL = process.env.BASE_URL || process.env.NEXT_PUBLIC_BASE_URL;
+
+export {
+  INSTAGRAM,
+  TWITTER,
+  FACEBOOK,
+  TIKTOK,
+  BRAND_NAME,
+  DATE_FORMAT,
+  BASE_URL,
+};

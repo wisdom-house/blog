@@ -63,8 +63,6 @@ export default function CustomPortableText({
     },
     types: {
       image: ({ value }) => {
-        console.log('Image:', value);
-
         if (!value?.asset?.url) return null;
 
         const isInline = value.layout === 'inline';

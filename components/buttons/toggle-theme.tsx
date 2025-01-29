@@ -38,8 +38,6 @@ const ThemeToggler = ({ hideOnDesktop, hideOnMobile }: IThemeToggleProps) => {
   const { theme, setTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
 
-  console.log('first', themes);
-
   return (
     <Popover
       onOpenChange={(open) => setIsOpen(open)}

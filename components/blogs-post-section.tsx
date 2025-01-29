@@ -34,7 +34,7 @@ const BlogPostSection = ({ categories, posts }: IBlogPostProps) => {
             <button
               key={category._id}
               className={cn(
-                'px-5 py-2 border-b-4 border-transparent hover:border-secondary transition-colors',
+                'px-5 py-2 border-b-4 border-transparent hover:border-secondary whitespace-nowrap transition-colors',
                 selectedCategory === category &&
                   'border-primary hover:border-primary',
                 category === categories[0] && 'sticky left-0 bg-app-background'
@@ -52,7 +52,7 @@ const BlogPostSection = ({ categories, posts }: IBlogPostProps) => {
               <BlogPostCard
                 key={_id}
                 title={title ?? ''}
-                excerpt={excerpt || 'No summary available.'}
+                excerpt={excerpt || ''}
                 date={publishedAt || ''}
                 mainImage={mainImage}
                 author={author || 'Anonymous'}
@@ -64,7 +64,7 @@ const BlogPostSection = ({ categories, posts }: IBlogPostProps) => {
       </div>
 
       <div className="w-full lmd:max-w-[300px] lmd:[&>div]:p-5">
-        <div className="top-[120px] z-50 sticky rounded-lg overflow-y-auto bg-app-background shadow-lg">
+        <div className="top-[120px] z-1 sticky rounded-lg overflow-y-auto bg-app-background shadow-lg">
           <NoAdvertCard />
         </div>
       </div>
