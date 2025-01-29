@@ -1,5 +1,6 @@
 'use client';
 
+import { BASE_URL } from '@/utils/constants';
 import {
   EmailIcon,
   EmailShareButton,
@@ -28,7 +29,7 @@ const ShareToSocialMedia = ({
   description,
   author,
 }: SocialShareTypes) => {
-  const appUrl = window.location.origin;
+  const appUrl = BASE_URL;
   const shareURL = `${appUrl}/${url}`;
   const shareTitle = `Check out this article by *${author}*: \n*${title.toUpperCase()}* \n`;
   const emailBody = `${description}\n\nRead full article here: <a href="${shareURL}">Read more here</a>`;

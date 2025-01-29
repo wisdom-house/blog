@@ -5,6 +5,7 @@ import { Kumbh_Sans } from 'next/font/google';
 import { pageTitle } from '@/utils/pageTitle';
 
 import '@/styles/globals.css';
+import { Toaster } from 'sonner';
 
 const font = Kumbh_Sans({
   subsets: ['latin'],
@@ -29,6 +30,8 @@ export default async function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${font.className} antialiased`}>
         <ThemeProvider attribute="class">{children}</ThemeProvider>
+
+        <Toaster position="top-right" expand richColors />
       </body>
     </html>
   );
