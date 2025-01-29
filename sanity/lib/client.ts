@@ -1,12 +1,12 @@
 import { createClient } from 'next-sanity';
 
-import { apiVersion, dataset, projectId, studioUrl } from '../env';
-
-const token = process.env.SANITY_API_WRITE_TOKEN;
-
-if (!token) {
-  throw new Error('SANITY_API_WRITE_TOKEN not found');
-}
+import {
+  apiVersion,
+  dataset,
+  projectId,
+  studioUrl,
+  writeToken as token,
+} from '../env';
 
 export const client = createClient({
   projectId,
