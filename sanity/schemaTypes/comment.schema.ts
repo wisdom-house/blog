@@ -21,14 +21,6 @@ export const commentType = defineType({
     }),
 
     defineField({
-      name: 'approved',
-      type: 'boolean',
-      title: 'Approved',
-      description: "Comments won't show on the site without approval",
-      initialValue: false,
-    }),
-
-    defineField({
       name: 'email',
       type: 'string',
       title: 'Email Address',
@@ -64,7 +56,7 @@ export const commentType = defineType({
         ],
         layout: 'radio',
       },
-      initialValue: 'pending',
+      initialValue: 'approved',
       validation: (rule) => rule.required(),
     }),
   ],

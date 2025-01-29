@@ -92,7 +92,6 @@ const Hero = ({ posts }: HeroProps) => {
         disableOnInteraction: false,
         pauseOnMouseEnter: true,
       }}
-      autoHeight
     >
       <NavButton direction="prev" />
       <NavButton direction="next" />
@@ -102,11 +101,11 @@ const Hero = ({ posts }: HeroProps) => {
           LATEST
         </p>
       </div>
-      <div className="relative">
+      <div className="relative h-[80vh]">
         {posts.map(({ title, mainImage, excerpt, slug, date, author }, i) => (
           <SwiperSlide key={i}>
-            <section className="section-padding text-left min-h-[500px] flex flex-col justify-end">
-              <div className="absolute top-0 left-0 -z-1 w-full h-full">
+            <section className="section-padding text-left h-inherit flex flex-col items-center justify-end">
+              <div className="absolute top-0 left-0 -z-1 w-full h-[90vh]">
                 <Image
                   src={urlFor(mainImage).url()}
                   alt={mainImage.alt}
@@ -118,14 +117,14 @@ const Hero = ({ posts }: HeroProps) => {
               </div>
 
               <div className="relative h-full w-full pt-16 pb-6 text-app-white font-bold">
-                <div className="pt-24 md:pt-32">
+                <div className="pt-24 md:pt-32 max-w-[500px]">
                   <p className="bg-app-foreground text-app-text text-a-12 rounded p-2 w-max mb-3">
                     {'CATEGORY'}
                   </p>
 
-                  <p className="text-a-18">{title}</p>
+                  <p className="text-a-18 lg:text-a-40">{title}</p>
 
-                  <p className=" line-clamp-3 my-2 max-w-[370px]">{excerpt}</p>
+                  <p className=" line-clamp-3 my-2 ">{excerpt}</p>
 
                   <p className="flex gap-[1ch] items-center my-4 text-a-12 font-light">
                     <span>{author}</span>

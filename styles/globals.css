@@ -37,6 +37,11 @@
     @apply font-bold;
   }
 
+  textarea,
+  input {
+    @apply outline-none focus:ring-1 focus:ring-offset-1 focus:ring-primary/30;
+  }
+
   .app-padding {
     @apply px-6 md:px-10 xl:px-[--full-bleed];
   }
@@ -47,5 +52,9 @@
 
   .section-padding {
     @apply app-padding py-10;
+  }
+
+  .app-input {
+    @apply flex flex-col gap-1 [&_input]:p-3 [&_input]:bg-primary/5  [&_textarea]:bg-primary/5  h-fit  w-full [&>input]:border [&>textarea]:border [&>textarea]:rounded [&>textarea]:p-3 [&>textarea]:min-h-28 [&>input]:rounded [&>div]:flex [&_input]:flex-1 [&>div]:justify-between [&>div:last-of-type]:border [&>div]:rounded [&>small]:text-a-10 [&>div]:gap-3 mb-3;
   }
 }

@@ -71,3 +71,13 @@ export const singlePostQuery = /* groq */ `
     ${singlePostFields}
   }
 `;
+
+export const postCommentsQuery = /* groq */ `
+  *[_type == "comment" && post._ref == $postId && status == "approved"] | order(_createdAt desc) {
+    _id,
+    name,
+    email,
+    comment,
+    _createdAt,
+  }
+`;

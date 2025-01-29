@@ -1,13 +1,12 @@
 import { type Metadata } from 'next';
-
-import { Open_Sans } from 'next/font/google';
+import { ThemeProvider } from 'next-themes';
+import { Kumbh_Sans } from 'next/font/google';
 
 import { pageTitle } from '@/utils/pageTitle';
 
 import '@/styles/globals.css';
-import { ThemeProvider } from 'next-themes';
 
-const font = Open_Sans({
+const font = Kumbh_Sans({
   subsets: ['latin'],
   weight: ['300', '400', '500', '700'],
 });
@@ -29,9 +28,7 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${font.className} antialiased`}>
-        <ThemeProvider attribute="class" enableSystem>
-          {children}
-        </ThemeProvider>
+        <ThemeProvider attribute="class">{children}</ThemeProvider>
       </body>
     </html>
   );

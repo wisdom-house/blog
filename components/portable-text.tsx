@@ -17,18 +17,22 @@ export default function CustomPortableText({
   const components: PortableTextComponents = {
     block: {
       h1: ({ children }) => (
-        <h1 className="mb-4 text-3xl font-bold">{children}</h1>
+        <h1 className="mb-2 text-3xl text-app-text font-bold">{children}</h1>
       ),
       h2: ({ children }) => (
-        <h2 className="mb-4 text-2xl font-semibold">{children}</h2>
+        <h2 className="mb-2 text-2xl text-app-text font-semibold">
+          {children}
+        </h2>
       ),
       h3: ({ children }) => (
-        <h3 className="mb-4 text-xl font-semibold">{children}</h3>
+        <h3 className="mb-2 text-xl text-app-text font-semibold">{children}</h3>
       ),
       h4: ({ children }) => (
-        <h4 className="mb-4 text-lg font-medium">{children}</h4>
+        <h4 className="mb-2 text-lg text-app-text font-medium">{children}</h4>
       ),
-      normal: ({ children }) => <p className="my-4 text-base">{children}</p>,
+      normal: ({ children }) => (
+        <p className="my-2 text-app-text">{children}</p>
+      ),
       blockquote: ({ children }) => (
         <blockquote className="pl-4 border-l-4 border-gray-300 italic text-gray-700">
           {children}
@@ -41,7 +45,7 @@ export default function CustomPortableText({
           href={value?.href}
           target="_blank"
           rel="noreferrer noopener"
-          className="text-blue-600 underline hover:text-blue-800"
+          className="underline hover:no-underline"
         >
           {children}
         </a>
@@ -59,8 +63,6 @@ export default function CustomPortableText({
     },
     types: {
       image: ({ value }) => {
-        console.log('Image:', value);
-
         if (!value?.asset?.url) return null;
 
         const isInline = value.layout === 'inline';
