@@ -53,6 +53,8 @@ export default {
         'app-white': {
           DEFAULT: '#dfdfd6',
         },
+
+        error: 'red',
       },
 
       fontSize: {

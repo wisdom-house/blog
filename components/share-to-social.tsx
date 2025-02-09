@@ -36,7 +36,7 @@ const ShareToSocialMedia = ({
 
   return (
     <div>
-      <p className="font-medium">Share to:</p>
+      <p className="font-medium mt-8 mb-3">Share to:</p>
 
       <div className="flex gap-2 flex-wrap mt-2">
         <FacebookShareButton

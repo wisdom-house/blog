@@ -67,7 +67,7 @@ export default async function PostPage({ params }: Props) {
     <>
       <section className="section-padding relative flex flex-col lmd:flex-row gap-10">
         <div className="flex-1">
-          <div className="flex items-center gap-[0.5ch] text-a-12">
+          <div className="flex items-center gap-[0.5ch]">
             <Link
               href={routes.home()}
               className="underline hover:no-underline transition-all ease-linear duration-200"
@@ -137,6 +137,7 @@ export default async function PostPage({ params }: Props) {
               <PostCommentForm
                 postId={post._id}
                 slug={post.slug as unknown as string}
+                post_title={post.title as string}
               />
             </div>
 

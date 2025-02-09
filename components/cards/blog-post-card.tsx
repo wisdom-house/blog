@@ -44,7 +44,7 @@ const BlogPostCard = ({
         />
       </div>
 
-      <p className="line-clamp-4 flex-1">{excerpt}</p>
+      <p className="line-clamp-3  flex-1">{excerpt}</p>
 
       <Link
         href={slug}
