@@ -63,7 +63,7 @@ export async function POST(request: Request) {
     });
 
     const from: Mail.Address = {
-      name: "NO_REPLY WISDOM Int'l",
+      name: 'no-reply@wisdomhint.com',
       address: process.env.MAIL_USERNAME as string,
     };
 
