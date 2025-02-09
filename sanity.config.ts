@@ -23,13 +23,14 @@ export default defineConfig({
   // Add and edit the content schema in the './sanity/schemaTypes' folder
   schema,
   plugins: [
+    structureTool({ structure }),
+
     presentationTool({
       resolve,
 
       previewUrl: { previewMode: { enable: '/api/draft-mode/enable' } },
     }),
 
-    structureTool({ structure }),
     // Vision is for querying with GROQ from inside the Studio
     // https://www.sanity.io/docs/the-vision-plugin
     ...(process.env.NODE_ENV === 'development'

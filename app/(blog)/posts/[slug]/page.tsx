@@ -148,14 +148,14 @@ export default async function PostPage({ params }: Props) {
                     <p className="text-lg font-semibold">
                       This post has no comments yet.
                     </p>
-                    <p className="text-base ">Be the first to comment!</p>
+                    <p className="text-base">Be the first to comment!</p>
                   </div>
                 }
               >
                 {comments.map((comment: Comment) => {
                   return (
                     <div
-                      key={comment._id}
+                      key={comment._createdAt}
                       className="bg-app-background group p-5 mb-4 rounded-lg shadow-md"
                     >
                       <div className="flex items-center gap-3 mb-3">

@@ -18,6 +18,7 @@ export const commentType = defineType({
       title: 'Name',
       description: 'Name of the commenter',
       validation: (rule) => rule.required(),
+      readOnly: true,
     }),
 
     defineField({
@@ -26,6 +27,7 @@ export const commentType = defineType({
       title: 'Email Address',
       group: 'email',
       validation: (rule) => rule.required().email(),
+      readOnly: true,
     }),
 
     defineField({
@@ -33,6 +35,7 @@ export const commentType = defineType({
       type: 'text',
       title: 'Comment Content',
       validation: (rule) => rule.required(),
+      readOnly: true,
     }),
 
     defineField({
@@ -41,18 +44,18 @@ export const commentType = defineType({
       to: [{ type: 'post' }],
       title: 'Post',
       validation: (rule) => rule.required(),
+      readOnly: true,
     }),
 
     defineField({
       name: 'status',
       type: 'string',
       title: 'Comment Status',
-      description: 'Status of the comment (approved, pending, or deleted)',
+      description: 'Status of the comment (approved, or hide)',
       options: {
         list: [
           { title: 'Approved', value: 'approved' },
-          { title: 'Pending', value: 'pending' },
-          { title: 'Deleted', value: 'deleted' },
+          { title: 'Hide', value: 'hidden' },
         ],
         layout: 'radio',
       },

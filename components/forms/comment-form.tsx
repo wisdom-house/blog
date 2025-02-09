@@ -10,14 +10,13 @@ import SvgIcon from '../icon';
 import Modal, { ModalRefActions } from '../modal';
 import Input from './input';
 import Textarea from './textarea';
-
-import { postCommentAction } from '@/server-actions/post-comment';
+import { routes } from '@/lib/routes';
 
 export interface CommentForm {
   name: string;
   email: string;
   comment: string;
-  status: 'approved' | 'pending' | 'deleted';
+  status: 'approved' | 'hidden';
 }
 
 const defaultValues: CommentForm = {
@@ -44,25 +43,44 @@ const PostCommentForm = ({
 
   const onSubmit: SubmitHandler<CommentForm> = (data) => {
     startTransition(async () => {
-      const response = await postCommentAction({
-        _id: postId,
-        slug,
-        ...data,
-      });
+      try {
+        const response = await fetch('/api/post-comment', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ _id: postId, slug, ...data }),
+        });
 
-      if (response.success) {
-        toast.success(response.message);
+        if (!response.ok) {
+          const error = await response.json();
+          throw new Error(error.message || 'Failed to submit comment');
+        }
+
+        await fetch('/api/revalidate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ path: routes.post(slug) }),
+        });
+
+        toast.success('Comment submitted successfully');
+
         commentModalRef.current?.close();
-      } else {
-        toast.error(response.message);
+      } catch (error) {
+        toast.error(
+          error instanceof Error ? error.message : 'Failed to submit comment'
+        );
       }
     });
   };
+
   return (
     <>
       <Modal
         ref={commentModalRef}
-        trigger={<Button>Leave a comment</Button>}
+        trigger={
+          <Button>
+            Leave a comment <span></span>
+          </Button>
+        }
         disableEscapeDown
         disableOutsideClick
         hideCloseButton
