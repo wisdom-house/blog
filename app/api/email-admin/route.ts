@@ -5,7 +5,7 @@ import Mail from 'nodemailer/lib/mailer';
 
 export async function POST(req: Request) {
   try {
-    const { name, email, comment } = await req.json();
+    const { name, email, comment, post_title } = await req.json();
 
     if (!name || !email || !comment) {
       return NextResponse.json(
@@ -18,10 +18,12 @@ export async function POST(req: Request) {
       name,
       email,
       comment,
+      post_title,
+      post_url: '',
     });
 
     const from: Mail.Address = {
-      name: "NO_REPLY WISDOM Int'l",
+      name: 'no-reply@wisdomhint.com',
       address: process.env.MAIL_USERNAME as string,
     };
 
