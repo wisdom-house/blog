@@ -12,6 +12,7 @@ import Search from './search';
 import ShowView from './show-view';
 
 import { cn } from '@/lib/classnameMerge';
+import { routes } from '@/lib/routes';
 
 const ThemeToggler = dynamic(
   () => import('@/components/buttons/toggle-theme'),
@@ -21,11 +22,11 @@ const ThemeToggler = dynamic(
 const navItems = [
   {
     label: 'About Us',
-    route: '#',
+    route: routes.about(),
   },
   {
     label: 'Contact',
-    route: '#',
+    route: routes.contact(),
   },
 ];
 
