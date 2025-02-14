@@ -18,10 +18,10 @@ const PrimaryLayout = async ({
   const { isEnabled: isDraftMode } = await draftMode();
 
   return (
-    <>
+    <div className="min-h-dvh flex flex-col">
       <Header />
 
-      <main>{children}</main>
+      <main className="flex-1">{children}</main>
 
       <Footer />
 
@@ -32,7 +32,7 @@ const PrimaryLayout = async ({
 
         <VisualEditing />
       </ShowView>
-    </>
+    </div>
   );
 };
 
