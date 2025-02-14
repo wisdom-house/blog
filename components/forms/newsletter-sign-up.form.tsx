@@ -33,7 +33,7 @@ const NewsletterSignUp = () => {
           throw new Error(response.data.message || 'Failed to submit comment');
         }
 
-        toast.success('Comment submitted successfully');
+        toast.success('Newsletter sign up successful');
 
         reset();
       } catch (error) {
