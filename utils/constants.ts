@@ -1,4 +1,4 @@
-const BRAND_NAME = 'Wisdom house';
+const BRAND_NAME = "Wisdom House Int'l";
 
 const DATE_FORMAT = 'D MMM, YYYY';
 

@@ -4,6 +4,7 @@ import { useRef, useTransition } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { isEmail } from 'validator';
+import axios from 'axios';
 
 import { Button } from '../buttons/button';
 import SvgIcon from '../icon';
@@ -17,6 +18,7 @@ export interface CommentForm {
   email: string;
   comment: string;
   status: 'approved' | 'hidden';
+  post_title: string;
 }
 
 const defaultValues: CommentForm = {
@@ -24,14 +26,17 @@ const defaultValues: CommentForm = {
   email: '',
   comment: '',
   status: 'approved',
+  post_title: '',
 };
 
 const PostCommentForm = ({
   postId,
   slug,
+  post_title,
 }: {
   postId: string;
   slug: string;
+  post_title: string;
 }) => {
   const [isPending, startTransition] = useTransition();
 
@@ -39,35 +44,41 @@ const PostCommentForm = ({
 
   const form = useForm<CommentForm>({ defaultValues });
 
-  const { handleSubmit } = form;
+  const { handleSubmit, reset } = form;
 
   const onSubmit: SubmitHandler<CommentForm> = (data) => {
     startTransition(async () => {
       try {
-        const response = await fetch('/api/post-comment', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ _id: postId, slug, ...data }),
+        const response = await axios.post('/api/post-comment', {
+          ...data,
+          _id: postId,
+          post_title,
+          slug,
         });
 
-        if (!response.ok) {
-          const error = await response.json();
-          throw new Error(error.message || 'Failed to submit comment');
+        if (response.status !== 200) {
+          throw new Error(response.data.message || 'Failed to submit comment');
         }
 
-        await fetch('/api/revalidate', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ path: routes.post(slug) }),
+        await axios.post('/api/revalidate', {
+          path: routes.post(slug),
         });
 
         toast.success('Comment submitted successfully');
 
         commentModalRef.current?.close();
+        reset();
       } catch (error) {
-        toast.error(
-          error instanceof Error ? error.message : 'Failed to submit comment'
-        );
+        if (axios.isAxiosError(error)) {
+          toast.error(
+            error.response?.data?.message ||
+              'Error occurred while processing your request'
+          );
+        } else {
+          toast.error(
+            error instanceof Error ? error.message : 'Failed to submit comment'
+          );
+        }
       }
     });
   };
