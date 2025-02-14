@@ -1,8 +1,9 @@
+import { render } from '@react-email/render';
 import { headers } from 'next/headers';
 import { NextResponse } from 'next/server';
 import Mail from 'nodemailer/lib/mailer';
 
-import { commentNotificationTemplate } from '@/lib/mail-templates/new-comment-notification';
+import NewCommentEmail from '@/components/email-templates/new-comment.template';
 import { routes } from '@/lib/routes';
 import { client } from '@/sanity/lib/client';
 import { sendEmail } from '@/utils/send-mail.utils';
@@ -54,14 +55,6 @@ export async function POST(request: Request) {
 
     console.log('Comment created successfully:', result);
 
-    const mailContent = commentNotificationTemplate({
-      name,
-      email,
-      comment,
-      post_title,
-      post_url,
-    });
-
     const from: Mail.Address = {
       name: 'no-reply@wisdomhint.com',
       address: process.env.MAIL_USERNAME as string,
@@ -72,10 +65,28 @@ export async function POST(request: Request) {
       address: process.env.ADMIN_EMAIL as string,
     };
 
+    const emailHtml = await render(
+      NewCommentEmail({
+        name,
+        email: email.toLowerCase(),
+        comment,
+        post_title,
+        post_url,
+      })
+    );
+
+    const text = `You have received a new comment on your post.
+
+Name: ${name}
+Email: ${email}
+Comment: ${comment}
+Post: ${post_title.toUpperCase()}
+    `;
+
     await sendEmail({
       from,
       to: [adminEmail],
-      subject: mailContent.subject,
+      subject: 'New Comment Alert: A User Commented on Your Post!',
       bcc: [
         {
           name: 'Paul AA',
@@ -86,8 +97,8 @@ export async function POST(request: Request) {
           address: 'hello@tonnipaul.com',
         },
       ],
-      text: mailContent.text,
-      html: mailContent.html,
+      text,
+      html: emailHtml,
     });
 
     return NextResponse.json(
