@@ -55,6 +55,6 @@
   }
 
   .app-input {
-    @apply flex flex-col gap-1 [&_input]:px-3 [&_input]:py-1 [&_input]:bg-primary/5 dark:[&_input]:bg-transparent [&_textarea]:bg-primary/5 dark:[&_textarea]:!bg-transparent  h-fit  w-full [&>input]:border [&>textarea]:border [&>textarea]:rounded [&>textarea]:px-3  [&>textarea]:py-2 [&>textarea]:min-h-28 [&>input]:rounded [&>div]:flex [&_input]:flex-1 [&>div]:justify-between [&>div:last-of-type]:border [&>div]:rounded [&>small]:text-a-10 [&>div]:gap-3 mb-3 [&>label]:text-a-12 md:text-a-14;
+    @apply flex flex-col gap-1 [&_input]:px-3 [&_input]:py-2 [&_input]:bg-primary/5 dark:[&_input]:bg-transparent [&_textarea]:bg-primary/5 dark:[&_textarea]:!bg-transparent  h-fit  w-full [&>input]:border [&>textarea]:border [&>textarea]:rounded [&>textarea]:px-3  [&>textarea]:py-2 [&>textarea]:min-h-28 [&>input]:rounded [&>div]:flex [&_input]:flex-1 [&>div]:justify-between [&>div:last-of-type]:border [&>div]:rounded [&>small]:text-a-10 [&>div]:gap-3 mb-3 [&>label]:text-a-12 md:text-a-14;
   }
 }

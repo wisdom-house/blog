@@ -1,6 +1,9 @@
 import Image from 'next/image';
-import React from 'react';
+import Link from 'next/link';
+
 import { Button } from '../buttons/button';
+
+import { routes } from '@/lib/routes';
 
 const NoAdvertCard = () => {
   return (
@@ -15,7 +18,9 @@ const NoAdvertCard = () => {
 
       <div>
         <p className="text-a-16 text-white text-center mb-5">Advertise here</p>
-        <Button>Contact us</Button>
+        <Link href={routes.contact()}>
+          <Button>Contact us</Button>
+        </Link>
       </div>
     </div>
   );
