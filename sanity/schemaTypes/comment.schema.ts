@@ -4,12 +4,6 @@ export const commentType = defineType({
   name: 'comment',
   title: 'Comments',
   type: 'document',
-  groups: [
-    {
-      name: 'email',
-      title: 'Email',
-    },
-  ],
 
   fields: [
     defineField({
@@ -25,7 +19,6 @@ export const commentType = defineType({
       name: 'email',
       type: 'string',
       title: 'Email Address',
-      group: 'email',
       validation: (rule) => rule.required().email(),
       readOnly: true,
     }),
