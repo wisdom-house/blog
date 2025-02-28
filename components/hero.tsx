@@ -9,6 +9,8 @@ import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
 
 import { BlogPostCardProps } from './cards/blog-post-card';
 import SvgIcon from './icon';
+import NoBlogPosts from './no-blog-posts';
+import ShowView from './show-view';
 
 import { routes } from '@/lib/routes';
 import { urlFor } from '@/sanity/lib/image';
@@ -65,6 +67,10 @@ const Pagination = ({ totalSlides }: { totalSlides: number }) => {
     };
   }, [swiper]);
 
+  if (totalSlides <= 1) {
+    return null;
+  }
+
   return (
     <div className="flex absolute w-full app-padding bottom-8 left-0 z-1  space-x-2">
       {Array.from({ length: totalSlides }).map((_, index) => (
@@ -82,6 +88,13 @@ const Pagination = ({ totalSlides }: { totalSlides: number }) => {
 };
 
 const Hero = ({ posts }: HeroProps) => {
+  if (!posts.length) {
+    return (
+      <div className="section-padding ">
+        <NoBlogPosts />
+      </div>
+    );
+  }
   return (
     <Swiper
       modules={[Autoplay]}
@@ -93,53 +106,60 @@ const Hero = ({ posts }: HeroProps) => {
         pauseOnMouseEnter: true,
       }}
     >
-      <NavButton direction="prev" />
-      <NavButton direction="next" />
+      <ShowView when={posts.length > 1}>
+        <NavButton direction="prev" />
+        <NavButton direction="next" />
+      </ShowView>
 
       <div className="absolute top-0 section-padding z-1">
         <p className="bg-red-700  w-max py-2 px-5 text-white rounded font-bold z-1">
           LATEST
         </p>
       </div>
-      <div className="relative h-[80vh]">
-        {posts.map(({ title, mainImage, excerpt, slug, date, author }, i) => (
-          <SwiperSlide key={i}>
-            <section className="section-padding text-left h-inherit flex flex-col items-center justify-end">
-              <div className="absolute top-0 left-0 -z-1 w-full h-[90vh]">
-                <Image
-                  src={urlFor(mainImage).url()}
-                  alt={mainImage.alt}
-                  sizes="100%"
-                  fill
-                  className="object-cover brightness-[0.3] bg-primary/80 opacity-95"
-                  priority
-                />
-              </div>
-
-              <div className="relative h-full w-full pt-16 pb-6 text-app-white font-bold">
-                <div className="pt-24 md:pt-32 max-w-[500px]">
-                  <p className="bg-app-foreground text-app-text text-a-12 rounded p-2 w-max mb-3">
-                    {'CATEGORY'}
-                  </p>
-
-                  <p className="text-a-18 lg:text-a-40">{title}</p>
-
-                  <p className=" line-clamp-3 my-2 ">{excerpt}</p>
-
-                  <p className="flex gap-[1ch] items-center my-4 text-a-12 font-light">
-                    <span>{author}</span>
-                    <span>-</span>
-                    <span>{dayjs(date).format(DATE_FORMAT)}</span>
-                  </p>
-
-                  <Link href={routes.post(slug)} className="text-primary w-max">
-                    Read now
-                  </Link>
+      <div className="relative min-h-[80vh]">
+        {posts?.map(
+          ({ title, mainImage, excerpt, slug, publishedAt, author }, i) => (
+            <SwiperSlide key={i}>
+              <section className="section-padding text-left h-inherit flex flex-col items-center justify-end">
+                <div className="absolute top-0 left-0 -z-1 w-full h-[90vh]">
+                  <Image
+                    src={urlFor(mainImage).url()}
+                    alt={mainImage.alt}
+                    sizes="100%"
+                    fill
+                    className="object-cover brightness-[0.3] bg-primary/80 opacity-95"
+                    priority
+                  />
                 </div>
-              </div>
-            </section>
-          </SwiperSlide>
-        ))}
+
+                <div className="relative h-full w-full pt-16 pb-6 text-app-white font-bold">
+                  <div className="pt-24 md:pt-32 max-w-[650px]">
+                    <p className="bg-app-foreground text-app-text text-a-12 rounded p-2 w-max mb-3">
+                      {'CATEGORY'}
+                    </p>
+
+                    <p className="text-a-18 lg:text-a-40">{title}</p>
+
+                    <p className=" line-clamp-3 my-2 ">{excerpt}</p>
+
+                    <p className="flex gap-[1ch] items-center my-4 text-a-12 font-light">
+                      <span>{author}</span>
+                      <span>-</span>
+                      <span>{dayjs(publishedAt).format(DATE_FORMAT)}</span>
+                    </p>
+
+                    <Link
+                      href={routes.post(slug)}
+                      className="text-primary w-max"
+                    >
+                      Read now
+                    </Link>
+                  </div>
+                </div>
+              </section>
+            </SwiperSlide>
+          )
+        )}
       </div>
 
       <Pagination totalSlides={posts.length} />
