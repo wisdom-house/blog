@@ -11,6 +11,10 @@ import { Tailwind as TailwindConfig } from '@react-email/tailwind';
 import { EmailHeader } from './email-header.template';
 import { EmailFooter } from './email-footer.template';
 
+export const contactEmailText = ({ name, email, message }: IContactForm) => {
+  return `Name: ${name}\nEmail: ${email}\nMessage: ${message}`;
+};
+
 export default function ContactEmail({ name, email, message }: IContactForm) {
   return (
     <Html>

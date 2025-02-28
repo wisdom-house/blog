@@ -1,6 +1,7 @@
 import nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
+import { fromEmail } from './constants';
 
 const transport = nodemailer.createTransport({
   host: process.env.MAIL_HOST,
@@ -13,14 +14,13 @@ const transport = nodemailer.createTransport({
 } as SMTPTransport.Options);
 
 type MailInfo = {
-  from: Mail.Address;
   to: Mail.Address | Mail.Address[];
   subject: string;
   text: string;
-  html: string;
+  html?: string;
   bcc?: Mail.Address | Mail.Address[];
 };
 
 export const sendEmail = async (mail: MailInfo) => {
-  return await transport.sendMail(mail);
+  return await transport.sendMail({ ...mail, from: fromEmail });
 };
