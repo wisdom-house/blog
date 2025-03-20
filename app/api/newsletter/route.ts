@@ -1,17 +1,21 @@
+import { render } from '@react-email/render';
 import { NextResponse } from 'next/server';
 import Mail from 'nodemailer/lib/mailer';
 
-import NewsletterSignupAdmin from '@/components/email-templates/newsletter-sign-up-admin.template';
-import NewsletterSignupUser from '@/components/email-templates/newsletter-sign-up-user.template';
+import NewsletterSignupAdmin, {
+  newsletterSignupAdminText,
+} from '@/components/email-templates/newsletter-sign-up-admin.template';
+import NewsletterSignupUser, {
+  newLetterSignUpPlainText,
+} from '@/components/email-templates/newsletter-sign-up-user.template';
 import { client } from '@/sanity/lib/client';
+import { adminEmail, devEmail } from '@/utils/constants';
 import { sendEmail } from '@/utils/send-mail.utils';
-import { render } from '@react-email/render';
 
 export async function POST(request: Request) {
   const { name, email } = await request.json();
 
   if (!client) {
-    console.log('Sanity client not configured');
     return NextResponse.json(
       { message: 'Sanity client not configured' },
       { status: 500 }
@@ -19,7 +23,6 @@ export async function POST(request: Request) {
   }
 
   if (!name || !email) {
-    console.log('Missing required fields');
     return NextResponse.json(
       { message: 'Missing required fields' },
       { status: 400 }
@@ -33,18 +36,6 @@ export async function POST(request: Request) {
       email,
     });
 
-    console.log('Comment created successfully:', result);
-
-    const from: Mail.Address = {
-      name: 'no-reply@wisdomhint.com',
-      address: process.env.MAIL_USERNAME as string,
-    };
-
-    const adminEmail: Mail.Address = {
-      name: 'Admin',
-      address: process.env.ADMIN_EMAIL as string,
-    };
-
     const userEmail: Mail.Address = {
       name,
       address: email,
@@ -56,20 +47,10 @@ export async function POST(request: Request) {
       })
     );
 
-    const newsletterSignupUserText = `Welcome to Our Newsletter, ${name}!
-
-Thank you for subscribing! You'll now receive the latest updates, exclusive content, and special offers directly in your inbox.
-
-Stay tuned for exciting news and valuable insights!
-
-Best regards,  
-[Your Brand Name]`;
-
     await sendEmail({
-      from,
       to: [userEmail],
       subject: `You're Subscribed! Welcome to Our Newsletter`,
-      text: newsletterSignupUserText,
+      text: newLetterSignUpPlainText(name),
       html: userEmailHtml,
     });
 
@@ -80,24 +61,12 @@ Best regards,
       })
     );
 
-    const newsletterSignupAdminText = `New Newsletter Subscription
-
-A new user has just subscribed to the newsletter!
-
-Name: ${name}  
-Email: ${email}
-
-Make sure to engage with them and provide valuable content.
-
-Best,  
-Your Newsletter Team`;
-
     await sendEmail({
-      from,
       to: [adminEmail],
       subject: `New Newsletter Signup: ${name.toUpperCase()} has subscribed!`,
-      text: newsletterSignupAdminText,
+      text: newsletterSignupAdminText(name, email),
       html: emailHtml,
+      bcc: [devEmail],
     });
 
     return NextResponse.json(

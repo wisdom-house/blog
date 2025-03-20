@@ -14,9 +14,6 @@ export async function POST(req: Request) {
   } catch (error) {
     console.error('Error in comment submission:', error);
 
-    return NextResponse.json(
-      { error: 'Failed to revalidate' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error }, { status: 500 });
   }
 }

@@ -4,8 +4,8 @@ const BRAND_NAME = "Wisdom House Int'l";
 
 const DATE_FORMAT = 'D MMM, YYYY';
 
-const INSTAGRAM = '#';
-const TWITTER = '#';
+const INSTAGRAM = 'https://www.instagram.com/wisdomhint_';
+const TWITTER = 'https://x.com/wisdomhint';
 const FACEBOOK = '#';
 const TIKTOK = '#';
 
