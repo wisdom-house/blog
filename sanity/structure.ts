@@ -14,4 +14,5 @@ export const structure: StructureResolver = (S) =>
           item.getId() &&
           !['post', 'category', 'author'].includes(item.getId()!)
       ),
+      S.divider(),
     ]);

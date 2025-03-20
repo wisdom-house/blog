@@ -22,7 +22,7 @@ export const postFields = /* groq */ `
     },
     alt
   },
-  "publishedAt": coalesce(publishedAt, _createdAt),
+"myPublishedAt": coalesce(myPublishedAt, _createdAt),
   "author": author->.name,
   categories[]->{
     title,
@@ -49,19 +49,25 @@ export const categoriesQuery = /* groq */ `
 `;
 
 export const postsQuery = /* groq */ `
-  *[_type == "post" && defined(slug.current)] | order(publishedAt desc, _updatedAt desc) {
+{
+  "posts": *[_type == "post" && defined(slug.current)] | order(myPublishedAt desc) [$start...$end] {
     ${postFields}
-  }
+  },
+  "total": count(*[_type == "post" && defined(slug.current)])
+}
 `;
 
 export const postsByCategoryQuery = /* groq */ `
-  *[_type == "post" && $categoryId in categories[]._ref] | order(publishedAt desc, _updatedAt desc) {
+{
+  "posts": *[_type == "post" && $categoryId in categories[]._ref] | order(myPublishedAt desc) [$start...$end] {
     ${postFields}
-  }
+  },
+  "total": count(*[_type == "post" && $categoryId in categories[]._ref])
+}
 `;
 
 export const searchPostsQuery = /* groq */ `
-  *[_type == "post" && (title match $query || excerpt match $query || body[].children[].text match $query)] | order(publishedAt desc, _updatedAt desc) {
+  *[_type == "post" && (title match $query || excerpt match $query || body[].children[].text match $query)] | order(myPublishedAt desc, _updatedAt desc) {
     ${postFields}
   }
 `;
@@ -80,4 +86,15 @@ export const postCommentsQuery = /* groq */ `
     comment,
     _createdAt,
   }
+`;
+
+export const activeAdvertsQuery = /* groq */ `
+*[_type == "advert" && start_date <= now() && end_date >= now()] | order(start_date desc) [0...4] {
+  _id,
+  name,
+  banner,
+  start_date,
+  end_date,
+  external_link
+}
 `;
