@@ -134,9 +134,9 @@ const Hero = ({ posts }: HeroProps) => {
 
                 <div className="relative h-full w-full pt-16 pb-6 text-app-white font-bold">
                   <div className="pt-24 md:pt-32 max-w-[650px]">
-                    <p className="bg-app-foreground text-app-text text-a-12 rounded p-2 w-max mb-3">
-                      {'CATEGORY'}
-                    </p>
+                    {/* <p className="bg-app-foreground text-app-text text-a-12 rounded p-2 w-max mb-3">
+                      {category?.title}
+                    </p> */}
 
                     <p className="text-a-18 lg:text-a-40">{title}</p>
 
