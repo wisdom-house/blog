@@ -1,9 +1,10 @@
+import ContactEmail, {
+  contactEmailText,
+} from '@/components/email-templates/contact-us.template';
+import { adminEmail, devEmail } from '@/utils/constants';
 import { sendEmail } from '@/utils/send-mail.utils';
-import { NextResponse } from 'next/server';
-import Mail from 'nodemailer/lib/mailer';
 import { render } from '@react-email/render';
-import ContactEmail from '@/components/email-templates/contact-us.template';
-import { BRAND_NAME } from '@/utils/constants';
+import { NextResponse } from 'next/server';
 
 export const POST = async (req: Request) => {
   try {
@@ -16,26 +17,16 @@ export const POST = async (req: Request) => {
       );
     }
 
-    const from: Mail.Address = {
-      name: BRAND_NAME,
-      address: process.env.MAIL_USERNAME as string,
-    };
-
-    const adminEmail: Mail.Address = {
-      name: 'Admin',
-      address: process.env.ADMIN_EMAIL as string,
-    };
-
     const emailHtml = await render(
       ContactEmail({ name, email: email.toLowerCase(), message })
     );
 
     await sendEmail({
-      from,
       to: [adminEmail],
       subject: 'New Contact Form Submission',
-      text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
+      text: contactEmailText({ name, email, message }),
       html: emailHtml,
+      bcc: [devEmail],
     });
 
     return NextResponse.json(

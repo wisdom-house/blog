@@ -1,12 +1,12 @@
-import { FACEBOOK, INSTAGRAM, TIKTOK, TWITTER } from '@/utils/constants';
+import { INSTAGRAM, TWITTER } from '@/utils/constants';
 import { Link, Section, Text } from '@react-email/components';
-import { FaFacebook, FaTiktok, FaInstagram, FaTwitter } from 'react-icons/fa';
+import { FaInstagram, FaTwitter } from 'react-icons/fa';
 
 const socials = [
-  { route: FACEBOOK, label: 'Facebook', icon: <FaFacebook /> },
+  // { route: FACEBOOK, label: 'Facebook', icon: <FaFacebook /> },
   { route: TWITTER, label: 'Twitter', icon: <FaTwitter /> },
   { route: INSTAGRAM, label: 'Instagram', icon: <FaInstagram /> },
-  { route: TIKTOK, label: 'TikTok', icon: <FaTiktok /> },
+  // { route: TIKTOK, label: 'TikTok', icon: <FaTiktok /> },
 ];
 
 export const EmailFooter = () => (
