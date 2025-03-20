@@ -7,7 +7,7 @@ import { routes } from '@/lib/routes';
 
 const NoAdvertCard = () => {
   return (
-    <div className="grid place-items-center p-6 relative aspect-video lmd:aspect-square group">
+    <div className="grid place-items-center p-6 relative aspect-video lmd:aspect-square shadow-lg group">
       <Image
         src={`https://picsum.photos/1900/1111`}
         alt="advertise here"

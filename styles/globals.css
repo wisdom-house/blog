@@ -39,7 +39,7 @@
 
   textarea,
   input {
-    @apply outline-none;
+    @apply outline-none text-a-16;
   }
 
   .app-padding {
