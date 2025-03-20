@@ -59,7 +59,8 @@ export const postType = defineType({
     }),
 
     defineField({
-      name: 'publishedAt',
+      name: 'myPublishedAt',
+      title: 'Displayed Publish Date',
       type: 'datetime',
       description: 'Date you want to be displayed on the UI.',
       validation: (rule) => rule.required(),
