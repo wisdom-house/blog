@@ -5,12 +5,12 @@ import { Category, Post } from '@/sanity.types';
 import { scrollToHeading } from '@/utils/scrollToHeading';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import AdvertList from './advert-list';
+import { type Advert } from './cards/advert-card';
 import BlogPostCard from './cards/blog-post-card';
-import NoAdvertCard from './cards/no-advert-card';
 import NoBlogPosts from './no-blog-posts';
-import ShowView from './show-view';
 import Pagination from './pagination';
-import AdvertCard, { type Advert } from './cards/advert-card';
+import ShowView from './show-view';
 
 interface IBlogPostProps {
   categories: Category[];
@@ -126,24 +126,7 @@ const BlogPostSection = ({
       </div>
 
       <div className="w-full lmd:max-w-[300px] lmd:[&>div]:p-5">
-        <div className="top-[120px] z-1 sticky rounded-lg overflow-y-auto bg-app-background">
-          <ShowView when={!!adverts.length} fallback={<NoAdvertCard />}>
-            <div className="grid gap-5">
-              <h2 className="text-lg font-semibold mb-4 text-app-text text-center">
-                Sponsored Adverts
-              </h2>
-
-              {adverts.map((ad, i) => (
-                <AdvertCard
-                  key={ad.banner + i}
-                  name={ad.name}
-                  banner={ad.banner}
-                  external_link={ad.external_link}
-                />
-              ))}
-            </div>
-          </ShowView>
-        </div>
+        <AdvertList adverts={adverts} />
       </div>
     </section>
   );

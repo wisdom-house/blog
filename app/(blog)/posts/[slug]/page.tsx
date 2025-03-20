@@ -7,14 +7,14 @@ import { PortableTextBlock } from 'next-sanity';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 
-import NoAdvertCard from '@/components/cards/no-advert-card';
 import PostCommentForm from '@/components/forms/comment-form';
 import PortableText from '@/components/portable-text';
 import ShareToSocialMedia from '@/components/share-to-social';
 import ShowView from '@/components/show-view';
 
+import AdvertList from '@/components/advert-list';
 import GoBackButton from '@/components/buttons/go-back.button';
-import AdvertCard, { Advert } from '@/components/cards/advert-card';
+import { Advert } from '@/components/cards/advert-card';
 import { Comment, Post } from '@/sanity.types';
 import { sanityFetch } from '@/sanity/lib/fetch';
 import { urlFor } from '@/sanity/lib/image';
@@ -62,7 +62,7 @@ export default async function PostPage({ params }: Props) {
     params: { postId: post._id },
   });
 
-  const activeAdverts = (await sanityFetch({
+  const adverts = (await sanityFetch({
     query: activeAdvertsQuery,
   })) as Advert[];
 
@@ -177,25 +177,9 @@ export default async function PostPage({ params }: Props) {
             </div>
           </div>
         </div>
-        <div className="w-full lmd:max-w-[300px] lmd:[&>div]:p-5">
-          <div className="top-[120px] z-1 sticky rounded-lg overflow-y-auto bg-app-background">
-            <ShowView when={!!activeAdverts.length} fallback={<NoAdvertCard />}>
-              <div className="grid gap-5">
-                <h2 className="text-lg font-semibold mb-4 text-app-text text-center">
-                  Sponsored Adverts
-                </h2>
 
-                {activeAdverts.map((ad, i) => (
-                  <AdvertCard
-                    key={ad.banner + i}
-                    name={ad.name}
-                    banner={ad.banner}
-                    external_link={ad.external_link}
-                  />
-                ))}
-              </div>
-            </ShowView>
-          </div>
+        <div className="w-full lmd:max-w-[300px] lmd:[&>div]:p-5">
+          <AdvertList adverts={adverts} />
         </div>
       </section>
     </>
