@@ -130,7 +130,7 @@ export type Post = {
     _key: string;
     [internalGroqTypeReferenceTo]?: 'category';
   }>;
-  publishedAt?: string;
+  myPublishedAt: string;
   body?: Array<
     | {
         children?: Array<{
@@ -213,7 +213,7 @@ export type Category = {
   _updatedAt: string;
   _rev: string;
   title?: string;
-  slug?: Slug;
+  slug: string;
   description?: string;
 };
 

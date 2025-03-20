@@ -1,12 +1,16 @@
 'use client';
 
 import { cn } from '@/lib/classnameMerge';
-import { routes } from '@/lib/routes';
 import { Category, Post } from '@/sanity.types';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { scrollToHeading } from '@/utils/scrollToHeading';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import AdvertList from './advert-list';
+import { type Advert } from './cards/advert-card';
 import BlogPostCard from './cards/blog-post-card';
-import NoAdvertCard from './cards/no-advert-card';
+import NoBlogPosts from './no-blog-posts';
+import Pagination from './pagination';
+import ShowView from './show-view';
 
 interface IBlogPostProps {
   categories: Category[];
@@ -15,58 +19,114 @@ interface IBlogPostProps {
     author: string;
     slug: string;
   })[];
+  postPerPage: number;
+  total: number;
+  adverts: Advert[];
 }
 
-const BlogPostSection = ({ categories, posts }: IBlogPostProps) => {
-  const [selectedCategory, setSelectedCategory] = useState(categories[0]);
+const BlogPostSection = ({
+  categories,
+  posts,
+  postPerPage,
+  total,
+  adverts,
+}: IBlogPostProps) => {
+  const [selectedCategory, setSelectedCategory] = useState('all');
+
+  const searchParams = useSearchParams();
   const router = useRouter();
 
-  const handleCategoryChange = (category: Category) => {
+  const category = searchParams.get('category');
+  const page = parseInt(searchParams.get('page') ?? '1');
+  const totalPages = Math.ceil(total / postPerPage);
+
+  const handleCategoryChange = (category: string) => {
     setSelectedCategory(category);
-    router.push(`/?category=${category.slug}`, undefined);
+
+    const params = new URLSearchParams();
+    params.set('category', category);
+    params.set('page', '1');
+
+    router.push(`?category=${category}`, { scroll: false });
+    scrollToHeading('blog-posts');
   };
 
+  useEffect(() => {
+    setSelectedCategory(category ?? 'all');
+  }, [category]);
+
   return (
-    <section className="section-padding relative flex flex-col lmd:flex-row gap-10">
-      <div>
-        <div className="flex bg-app-background shadow-lg rounded overflow-x-auto mb-10">
-          {categories.map((category) => (
+    <section
+      id="blog-posts"
+      className="section-padding scroll-m-20 relative flex flex-col lmd:flex-row gap-10"
+    >
+      <div className="flex-1">
+        <ShowView when={!!categories.length}>
+          <div className="flex bg-app-background shadow-lg rounded overflow-x-auto mb-10">
             <button
-              key={category._id}
               className={cn(
                 'px-5 py-2 border-b-4 border-transparent hover:border-secondary whitespace-nowrap transition-colors',
-                selectedCategory === category &&
+                selectedCategory === 'all' &&
                   'border-primary hover:border-primary',
-                category === categories[0] && 'sticky left-0 bg-app-background'
+                'sticky left-0 bg-app-background'
               )}
-              onClick={() => handleCategoryChange(category)}
+              onClick={() => handleCategoryChange('all')}
             >
-              {category.title}
+              All
             </button>
-          ))}
-        </div>
+            {categories.map((category) => (
+              <button
+                key={category._id}
+                className={cn(
+                  'px-5 py-2 border-b-4 border-solid border-transparent hover:border-secondary whitespace-nowrap transition-colors',
+                  selectedCategory === category.slug &&
+                    'border-primary hover:border-primary',
+                  category === categories[0] &&
+                    'sticky left-0 bg-app-background'
+                )}
+                onClick={() => handleCategoryChange(category.slug)}
+              >
+                {category.title}
+              </button>
+            ))}
+          </div>
+        </ShowView>
 
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-5">
-          {posts.map(
-            ({ _id, title, excerpt, publishedAt, author, mainImage, slug }) => (
-              <BlogPostCard
-                key={_id}
-                title={title ?? ''}
-                excerpt={excerpt || ''}
-                date={publishedAt || ''}
-                mainImage={mainImage}
-                author={author || 'Anonymous'}
-                slug={routes.post(slug)}
-              />
-            )
-          )}
-        </div>
+        <ShowView when={!!posts.length} fallback={<NoBlogPosts />}>
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-5">
+            {posts?.map(
+              ({
+                _id,
+                title,
+                excerpt,
+                myPublishedAt,
+                author,
+                mainImage,
+                slug,
+              }) => {
+                return (
+                  <BlogPostCard
+                    key={_id}
+                    title={title ?? ''}
+                    excerpt={excerpt || ''}
+                    publishedAt={myPublishedAt || ''}
+                    mainImage={mainImage}
+                    author={author || 'Anonymous'}
+                    slug={slug}
+                  />
+                );
+              }
+            )}
+          </div>
+        </ShowView>
+
+        <ShowView when={totalPages > 1}>
+          <Pagination currentPage={page} totalPages={totalPages} />
+        </ShowView>
       </div>
 
       <div className="w-full lmd:max-w-[300px] lmd:[&>div]:p-5">
-        <div className="top-[120px] z-1 sticky rounded-lg overflow-y-auto bg-app-background shadow-lg">
-          <NoAdvertCard />
-        </div>
+        <AdvertList adverts={adverts} />
       </div>
     </section>
   );

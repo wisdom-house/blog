@@ -11,7 +11,8 @@ export type IconName =
   | 'sun'
   | 'moon'
   | 'chevron-right'
-  | 'monitor-smartphone';
+  | 'monitor-smartphone'
+  | 'file-text';
 
 export const icons: IconName[] = [
   'menu',
@@ -27,4 +28,5 @@ export const icons: IconName[] = [
   'moon',
   'chevron-right',
   'monitor-smartphone',
+  'file-text',
 ];

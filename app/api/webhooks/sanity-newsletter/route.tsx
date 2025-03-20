@@ -15,7 +15,6 @@ export async function POST(req: Request) {
     const blogUrl = `https://your-nextjs-app.com/blog/${body.slug}`;
 
     await sendEmail({
-      from: { name: 'Your Blog', address: process.env.EMAIL_USER! },
       subject: `New Blog Post: ${blogTitle}`,
       html: `<p>A new blog post has been published: <strong>${blogTitle}</strong></p>
              <p>Read it here: <a href="${blogUrl}">${blogUrl}</a></p>`,
@@ -33,10 +32,6 @@ export async function POST(req: Request) {
       { status: 200 }
     );
   } catch (error) {
-    console.error('Error sending emails:', error);
-    return NextResponse.json(
-      { message: 'Error sending emails' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error }, { status: 500 });
   }
 }
