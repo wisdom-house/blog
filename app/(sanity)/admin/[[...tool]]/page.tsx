@@ -6,7 +6,7 @@ import { BRAND_NAME } from '@/utils/constants';
 
 export const dynamic = 'force-static';
 
-export { metadata as studioMetadata, viewport } from 'next-sanity/studio';
+export { viewport } from 'next-sanity/studio';
 
 export const metadata: Metadata = {
   ...studioMetadata,
