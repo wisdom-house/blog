@@ -5,21 +5,24 @@ import dayjs from 'dayjs';
 import { Metadata } from 'next';
 import { PortableTextBlock } from 'next-sanity';
 import Image from 'next/image';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import NoAdvertCard from '@/components/cards/no-advert-card';
 import PostCommentForm from '@/components/forms/comment-form';
-import SvgIcon from '@/components/icon';
 import PortableText from '@/components/portable-text';
 import ShareToSocialMedia from '@/components/share-to-social';
 import ShowView from '@/components/show-view';
 
-import { routes } from '@/lib/routes';
+import GoBackButton from '@/components/buttons/go-back.button';
+import AdvertCard, { Advert } from '@/components/cards/advert-card';
 import { Comment, Post } from '@/sanity.types';
 import { sanityFetch } from '@/sanity/lib/fetch';
 import { urlFor } from '@/sanity/lib/image';
-import { postCommentsQuery, singlePostQuery } from '@/sanity/lib/queries';
+import {
+  activeAdvertsQuery,
+  postCommentsQuery,
+  singlePostQuery,
+} from '@/sanity/lib/queries';
 import { DATE_FORMAT } from '@/utils/constants';
 
 type Props = {
@@ -59,6 +62,10 @@ export default async function PostPage({ params }: Props) {
     params: { postId: post._id },
   });
 
+  const activeAdverts = (await sanityFetch({
+    query: activeAdvertsQuery,
+  })) as Advert[];
+
   if (!post) {
     return notFound();
   }
@@ -67,18 +74,7 @@ export default async function PostPage({ params }: Props) {
     <>
       <section className="section-padding relative flex flex-col lmd:flex-row gap-10">
         <div className="flex-1">
-          <div className="flex items-center gap-[0.5ch]">
-            <Link
-              href={routes.home()}
-              className="underline hover:no-underline transition-all ease-linear duration-200"
-            >
-              Home
-            </Link>
-
-            <SvgIcon name="chevron-right" className="w-2 h-2" />
-
-            <p className="text-primary font-medium">{post.title}</p>
-          </div>
+          <GoBackButton />
 
           <div>
             <div className="flex gap-4 my-6 flex-wrap">
@@ -106,7 +102,7 @@ export default async function PostPage({ params }: Props) {
               {post.author ?? ''}
             </p>
 
-            <time>{dayjs(post.publishedAt).format(DATE_FORMAT)}</time>
+            <time>{dayjs(post.myPublishedAt).format(DATE_FORMAT)}</time>
           </div>
 
           <div className="relative aspect-video w-full overflow-hidden my-5">
@@ -181,10 +177,24 @@ export default async function PostPage({ params }: Props) {
             </div>
           </div>
         </div>
-
         <div className="w-full lmd:max-w-[300px] lmd:[&>div]:p-5">
-          <div className="top-[120px] z-1 sticky rounded-lg overflow-y-auto bg-app-background shadow-lg">
-            <NoAdvertCard />
+          <div className="top-[120px] z-1 sticky rounded-lg overflow-y-auto bg-app-background">
+            <ShowView when={!!activeAdverts.length} fallback={<NoAdvertCard />}>
+              <div className="grid gap-5">
+                <h2 className="text-lg font-semibold mb-4 text-app-text text-center">
+                  Sponsored Adverts
+                </h2>
+
+                {activeAdverts.map((ad, i) => (
+                  <AdvertCard
+                    key={ad.banner + i}
+                    name={ad.name}
+                    banner={ad.banner}
+                    external_link={ad.external_link}
+                  />
+                ))}
+              </div>
+            </ShowView>
           </div>
         </div>
       </section>
