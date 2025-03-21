@@ -143,7 +143,7 @@ const Hero = ({ posts }: HeroProps) => {
                     <p className=" line-clamp-3 my-2 ">{excerpt}</p>
 
                     <p className="flex gap-[1ch] items-center my-4 text-a-12 font-light">
-                      <span>{author}</span>
+                      <span className="font-bold">{author}</span>
                       <span>-</span>
                       <span>{dayjs(publishedAt).format(DATE_FORMAT)}</span>
                     </p>

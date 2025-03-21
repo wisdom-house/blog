@@ -12,7 +12,7 @@ const Logo = ({ leftTop }: LogoProps) => {
     <Link href={routes.home()}>
       <div className="relative w-full max-w-[100px] md:max-w-[150px] aspect-video h-10 sm:h-[60px]">
         <Image
-          src="/assets/logo-nbg.png"
+          src="/assets/logo-ii.png"
           alt="wisdom house logo"
           fill
           sizes="100%"
