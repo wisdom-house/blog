@@ -15,9 +15,9 @@ const AboutUsPage = () => {
         About Us
       </h1>
       <div className="flex justify-center mb-6">
-        <div className="relative w-full max-w-[100px] md:max-w-[150px] aspect-video h-10 sm:h-[60px]">
+        <div className="relative w-full max-w-[100px] md:max-w-[200px] aspect-video h-10 max-sm:h-[60px]">
           <Image
-            src="/assets/logo-nbg.png"
+            src="/assets/logo-ii.png"
             alt="wisdom house logo"
             fill
             sizes="100%"

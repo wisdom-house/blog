@@ -13,7 +13,7 @@ type Props = {
   searchParams: Promise<Record<string, string>>;
 };
 
-const POST_PER_PAGE = 2;
+const POST_PER_PAGE = 15;
 
 const Home = async ({ searchParams }: Props) => {
   const { page = '1', category = '' } = await searchParams;

@@ -9,6 +9,8 @@ const TWITTER = 'https://x.com/wisdomhint';
 const FACEBOOK = '#';
 const TIKTOK = '#';
 
+const SUPPORT_EMAIL = process.env.ADMIN_EMAIL as string;
+
 const BASE_URL = process.env.BASE_URL || process.env.NEXT_PUBLIC_BASE_URL;
 
 const adminEmail: Mail.Address = {
@@ -33,6 +35,7 @@ export {
   TIKTOK,
   BRAND_NAME,
   DATE_FORMAT,
+  SUPPORT_EMAIL,
   BASE_URL,
   adminEmail,
   devEmail,

@@ -6,10 +6,12 @@ import {
   BRAND_NAME,
   // FACEBOOK,
   INSTAGRAM,
+  SUPPORT_EMAIL,
   // TIKTOK,
   TWITTER,
 } from '@/utils/constants';
 import { routes } from '@/lib/routes';
+import Logo from './logo';
 
 export const socials = [
   // { route: FACEBOOK, label: 'Facebook', icon: 'facebook' },
@@ -21,35 +23,72 @@ export const socials = [
 const quickLinks = [
   { href: routes.about(), label: 'About Us' },
   { href: routes.contact(), label: 'Contact' },
+  {
+    label: 'Charity Program',
+    href: routes.contact(),
+    newTab: true,
+  },
 ];
 
 const Footer = () => {
   return (
     <footer className="app-padding bg-app-black text-app-white py-16 px-8 md:px-14">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-16">
-        {/* Newsletter Section */}
+      <div className="flex flex-wrap xs:[&>*]:min-w-40 gap-10 justify-between ">
         <div>
-          <h2 className="text-xl font-semibold text-primary mb-4">
-            Stay Updated
-          </h2>
-          <p className="text-sm text-app-white/80 mb-4">
-            Subscribe to our newsletter for the latest news, insights, and
-            exclusive offers.
-          </p>
-          <NewsletterSignUp />
+          <Logo leftTop />
+
+          <div>
+            <h2 className="text-lg font-semibold text-primary mt-4">Address</h2>
+            <p className="text-sm">
+              Regina Ola Ore Street, Ojodu berger, Lagos.
+            </p>
+          </div>
+          <div>
+            <h2 className="text-lg font-semibold text-primary mt-4">Email</h2>
+            <Link
+              href={`mailto:${SUPPORT_EMAIL}`}
+              className="text-sm underline"
+            >
+              {SUPPORT_EMAIL}
+            </Link>
+          </div>
+
+          {/* Social Media Section */}
+          <div>
+            <h2 className="text-lg font-semibold text-primary mt-4 mb-2">
+              Socials
+            </h2>
+            <div className="flex gap-5">
+              {socials.map(({ route, label, icon }) => (
+                <Link
+                  href={route}
+                  key={label}
+                  aria-label={label}
+                  className="hover:text-tertiary transition-colors duration-200"
+                  target="_blank"
+                >
+                  <SvgIcon
+                    name={icon as IconName}
+                    className="w-7 h-7 hover:scale-110 transition-transform"
+                  />
+                </Link>
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* Quick Links Section */}
-        <div className="text-center md:text-left">
+        <div>
           <h2 className="text-lg font-semibold text-primary mb-4">
             Quick Links
           </h2>
           <ul className="space-y-3">
-            {quickLinks.map(({ href, label }) => (
+            {quickLinks.map(({ href, label, newTab }) => (
               <li key={label}>
                 <Link
                   href={href}
                   className="text-sm text-app-white/80 hover:text-tertiary transition-colors duration-200"
+                  target={newTab ? '_blank' : ''}
                 >
                   {label}
                 </Link>
@@ -58,25 +97,16 @@ const Footer = () => {
           </ul>
         </div>
 
-        {/* Social Media Section */}
-        <div className="text-center md:text-left">
-          <h2 className="text-lg font-semibold text-primary mb-4">Follow Us</h2>
-          <div className="flex justify-center md:justify-start gap-5">
-            {socials.map(({ route, label, icon }) => (
-              <Link
-                href={route}
-                key={label}
-                aria-label={label}
-                className="hover:text-tertiary transition-colors duration-200"
-                target="_blank"
-              >
-                <SvgIcon
-                  name={icon as IconName}
-                  className="w-7 h-7 hover:scale-110 transition-transform"
-                />
-              </Link>
-            ))}
-          </div>
+        {/* Newsletter Section */}
+        <div className="flex-1 max-w-[500px]">
+          <h2 className="text-xl font-semibold text-primary mb-4">
+            Stay Updated
+          </h2>
+          <p className="text-sm text-app-white/80 mb-4">
+            Subscribe to our newsletter for the latest news, insights, and
+            exclusive offers.
+          </p>
+          <NewsletterSignUp />
         </div>
       </div>
 
