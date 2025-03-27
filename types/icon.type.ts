@@ -13,10 +13,12 @@ export type IconName =
   | 'chevron-right'
   | 'monitor-smartphone'
   | 'file-text'
-  | 'envelope';
+  | 'envelope'
+  | 'chevron-down';
 
 export const icons: IconName[] = [
   'menu',
+  'chevron-down',
   'envelope',
   'menu',
   'close',
