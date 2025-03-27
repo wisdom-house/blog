@@ -58,7 +58,7 @@ const BlogPostSection = ({
   return (
     <section
       id="blog-posts"
-      className="section-padding scroll-m-20 relative flex flex-col lmd:flex-row gap-10"
+      className="section-padding scroll-m-20 relative flex flex-col lg:flex-row gap-10"
     >
       <div className="flex-1">
         <ShowView when={!!categories.length}>
@@ -125,7 +125,7 @@ const BlogPostSection = ({
         </ShowView>
       </div>
 
-      <div className="w-full lmd:max-w-[300px] lmd:[&>div]:p-5">
+      <div className="w-full max-w-[500px] lg:max-w-[300px] mx-auto [&>div]:p-5">
         <AdvertList adverts={adverts} />
       </div>
     </section>

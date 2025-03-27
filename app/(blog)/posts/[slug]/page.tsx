@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import { Metadata } from 'next';
 import { PortableTextBlock } from 'next-sanity';
 import Image from 'next/image';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import PostCommentForm from '@/components/forms/comment-form';
@@ -15,6 +16,7 @@ import ShowView from '@/components/show-view';
 import AdvertList from '@/components/advert-list';
 import GoBackButton from '@/components/buttons/go-back.button';
 import { Advert } from '@/components/cards/advert-card';
+import { routes } from '@/lib/routes';
 import { Comment, Post } from '@/sanity.types';
 import { sanityFetch } from '@/sanity/lib/fetch';
 import { urlFor } from '@/sanity/lib/image';
@@ -32,7 +34,7 @@ type Props = {
 type PostProp = [
   Omit<Post, 'author' | 'categories'> & {
     author: string;
-    categories: { title: string; _id: string }[];
+    categories: { title: string; _id: string; slug: string }[];
   },
 ];
 
@@ -82,12 +84,13 @@ export default async function PostPage({ params }: Props) {
                 const randomColor =
                   colors[Math.floor(Math.random() * colors.length)];
                 return (
-                  <span
+                  <Link
+                    href={`${routes.home()}?category=${category.slug}`}
                     key={category.title}
                     className={`py-2 px-5 font-semibold w-max text-white ${randomColor} rounded`}
                   >
                     {category.title}
-                  </span>
+                  </Link>
                 );
               })}
             </div>

@@ -30,11 +30,10 @@ const themeIconMapping: Record<string, IconName> = {
 };
 
 interface IThemeToggleProps {
-  hideOnDesktop?: boolean;
-  hideOnMobile?: boolean;
+  showOnDesktop?: boolean;
 }
 
-const ThemeToggler = ({ hideOnDesktop, hideOnMobile }: IThemeToggleProps) => {
+const ThemeToggler = ({ showOnDesktop }: IThemeToggleProps) => {
   const { theme, setTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -44,7 +43,10 @@ const ThemeToggler = ({ hideOnDesktop, hideOnMobile }: IThemeToggleProps) => {
       trigger={
         <button
           aria-label="theme toggler"
-          className="flex items-end justify-center gap-2 text-app-text group rounded-1/2"
+          className={cn(
+            '!flex justify-self-end  items-end justify-center  gap-2 text-app-text group rounded-1/2 lg:hidden',
+            showOnDesktop && 'hidden lg:block'
+          )}
         >
           <SvgIcon
             name={themeIconMapping[theme ?? 'light']}
@@ -52,7 +54,10 @@ const ThemeToggler = ({ hideOnDesktop, hideOnMobile }: IThemeToggleProps) => {
           />
           <SvgIcon
             name={'chevron-right'}
-            className={cn('w-3 h-3 rotate-90', isOpen && '-rotate-90')}
+            className={cn(
+              'w-3 h-3 inline-flex rotate-90',
+              isOpen && '-rotate-90'
+            )}
           />
         </button>
       }
@@ -63,9 +68,8 @@ const ThemeToggler = ({ hideOnDesktop, hideOnMobile }: IThemeToggleProps) => {
       {(close) => (
         <div
           className={cn(
-            'bg-app-background rounded border w-40 shadow-lg z-5 overflow-hidden',
-            hideOnDesktop && 'lmd:hidden',
-            hideOnMobile && 'hidden lmd:block'
+            'bg-app-background rounded border w-40 shadow-lg z-5 overflow-hidden ',
+            showOnDesktop && 'hidden lg:block'
           )}
         >
           {themes.map((t) => (
