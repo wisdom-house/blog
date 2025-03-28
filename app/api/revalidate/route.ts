@@ -12,8 +12,6 @@ export async function POST(req: Request) {
     revalidatePath(path);
     return NextResponse.json({ message: 'Path revalidated' });
   } catch (error) {
-    console.error('Error in comment submission:', error);
-
     return NextResponse.json({ error }, { status: 500 });
   }
 }

@@ -1,6 +1,7 @@
 import { render } from '@react-email/render';
 import { NextResponse } from 'next/server';
 import Mail from 'nodemailer/lib/mailer';
+import { isValidSignature, SIGNATURE_HEADER_NAME } from '@sanity/webhook';
 
 import NewsletterSignupAdmin, {
   newsletterSignupAdminText,
@@ -8,18 +9,26 @@ import NewsletterSignupAdmin, {
 import NewsletterSignupUser, {
   newLetterSignUpPlainText,
 } from '@/components/email-templates/newsletter-sign-up-user.template';
-import { client } from '@/sanity/lib/client';
 import { adminEmail, devEmail } from '@/utils/constants';
 import { sendEmail } from '@/utils/send-mail.utils';
+
+const API_SECRET = process.env.SANITY_WEBHOOK_SECRET as string;
 
 export async function POST(request: Request) {
   const { name, email } = await request.json();
 
-  if (!client) {
-    return NextResponse.json(
-      { message: 'Sanity client not configured' },
-      { status: 500 }
-    );
+  const signature = request.headers.get(SIGNATURE_HEADER_NAME) as string;
+
+  const isValid = isValidSignature(
+    JSON.stringify({ name, email }),
+    signature,
+    API_SECRET
+  );
+
+  if (!isValid) {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+      status: 403,
+    });
   }
 
   if (!name || !email) {
@@ -30,23 +39,19 @@ export async function POST(request: Request) {
   }
 
   try {
-    const result = await client.create({
-      _type: 'newsletter',
-      name,
-      email,
-    });
-
     const userEmail: Mail.Address = {
       name,
       address: email,
     };
 
+    // Render the email template for the user
     const userEmailHtml = await render(
       NewsletterSignupUser({
         name,
       })
     );
 
+    // Send email to the user
     await sendEmail({
       to: [userEmail],
       subject: `You're Subscribed! Welcome to Our Newsletter`,
@@ -54,6 +59,7 @@ export async function POST(request: Request) {
       html: userEmailHtml,
     });
 
+    // Render the admin notification template
     const emailHtml = await render(
       NewsletterSignupAdmin({
         name,
@@ -61,6 +67,7 @@ export async function POST(request: Request) {
       })
     );
 
+    // Send email to the admin
     await sendEmail({
       to: [adminEmail],
       subject: `New Newsletter Signup: ${name.toUpperCase()} has subscribed!`,
@@ -71,18 +78,13 @@ export async function POST(request: Request) {
 
     return NextResponse.json(
       {
-        message: 'Signed up successfully',
-        data: {
-          createdAt: result._createdAt,
-          name: result.name,
-          id: result._id,
-        },
+        message: 'Email sent successfully',
       },
       { status: 200 }
     );
-  } catch (err) {
+  } catch (error) {
     return NextResponse.json(
-      { message: "Couldn't complete request", error: err },
+      { message: "Couldn't complete request", error },
       { status: 500 }
     );
   }

@@ -1,15 +1,15 @@
 import { render } from '@react-email/render';
 import { headers } from 'next/headers';
 import { NextResponse } from 'next/server';
-import Mail from 'nodemailer/lib/mailer';
 
 import NewCommentEmail, {
   newCommentPlainText,
 } from '@/components/email-templates/new-comment.template';
 import { routes } from '@/lib/routes';
-import { client } from '@/sanity/lib/client';
-import { devEmail } from '@/utils/constants';
+import { adminEmail, devEmail } from '@/utils/constants';
 import { sendEmail } from '@/utils/send-mail.utils';
+import { isValidSignature, SIGNATURE_HEADER_NAME } from '@sanity/webhook';
+import { client } from '@/sanity/lib/client';
 
 const getPostUrl = async (slug: string) => {
   const headerList = await headers();
@@ -19,17 +19,24 @@ const getPostUrl = async (slug: string) => {
   return `${protocol}://${host}${routes.post(slug)}`;
 };
 
+const API_SECRET = process.env.SANITY_WEBHOOK_SECRET as string;
+
 export async function POST(request: Request) {
-  const { _id, name, email, comment, status, post_title, slug } =
-    await request.json();
+  const comment_data = await request.json();
+  const { _id, name, email, comment } = comment_data;
 
-  const post_url = await getPostUrl(slug);
+  const signature = request.headers.get(SIGNATURE_HEADER_NAME) as string;
 
-  if (!client) {
-    return NextResponse.json(
-      { message: 'Sanity client not configured' },
-      { status: 500 }
-    );
+  const isValid = isValidSignature(
+    JSON.stringify({ name, email }),
+    signature,
+    API_SECRET
+  );
+
+  if (!isValid) {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+      status: 403,
+    });
   }
 
   if (!_id || !name || !email || !comment) {
@@ -39,24 +46,19 @@ export async function POST(request: Request) {
     );
   }
 
+  const postData = await client.fetch(
+    `*[_id == $postId] {
+      title,
+      slug
+    }[0]`,
+    { postId: comment_data.post._ref }
+  );
+
+  const post_title = postData.title;
+  const post_slug = postData.slug?.current;
+  const post_url = await getPostUrl(post_slug);
+
   try {
-    const result = await client.create({
-      _type: 'comment',
-      post: {
-        _type: 'reference',
-        _ref: _id,
-      },
-      name,
-      email,
-      comment,
-      status,
-    });
-
-    const adminEmail: Mail.Address = {
-      name: 'Admin',
-      address: process.env.ADMIN_EMAIL as string,
-    };
-
     const emailHtml = await render(
       NewCommentEmail({
         name,
@@ -71,25 +73,25 @@ export async function POST(request: Request) {
       to: [adminEmail],
       subject: 'New Comment Alert: A User Commented on Your Post!',
       bcc: [devEmail],
-      text: newCommentPlainText({ name, email, comment, post_title, post_url }),
+      text: newCommentPlainText({
+        name,
+        email,
+        comment,
+        post_title: '',
+        post_url,
+      }),
       html: emailHtml,
     });
 
     return NextResponse.json(
       {
         message: 'Comment submitted successfully',
-        data: {
-          comment: result.comment,
-          createdAt: result._createdAt,
-          name: result.name,
-          id: result._id,
-        },
       },
       { status: 200 }
     );
-  } catch (err) {
+  } catch (error) {
     return NextResponse.json(
-      { message: "Couldn't submit comment", error: err },
+      { message: "Couldn't send notification", error },
       { status: 500 }
     );
   }
