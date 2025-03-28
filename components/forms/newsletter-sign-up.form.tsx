@@ -1,12 +1,15 @@
 'use client';
 
-import { isEmail } from 'validator';
+import axios from 'axios';
+import { useTransition } from 'react';
+import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+
 import { Button } from '../buttons/button';
 import Input from './input';
-import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
-import { useTransition } from 'react';
-import axios from 'axios';
-import { toast } from 'sonner';
+
+import { client } from '@/sanity/lib/client';
+import { isEmail } from 'validator';
 
 interface INewsLetterSignUp {
   name: string;
@@ -24,14 +27,14 @@ const NewsletterSignUp = () => {
 
   const { handleSubmit, reset } = form;
 
-  const onSubmit: SubmitHandler<INewsLetterSignUp> = (data) => {
+  const onSubmit: SubmitHandler<INewsLetterSignUp> = ({ name, email }) => {
     startTransition(async () => {
       try {
-        const response = await axios.post('/api/newsletter', data);
-
-        if (response.status !== 200) {
-          throw new Error(response.data.message || 'Failed to submit comment');
-        }
+        await client.create({
+          _type: 'newsletter',
+          name,
+          email,
+        });
 
         toast.success('Newsletter sign up successful');
 

@@ -11,8 +11,8 @@ import SvgIcon from '../icon';
 import Modal, { ModalRefActions } from '../modal';
 import Input from './input';
 import Textarea from './textarea';
-import { routes } from '@/lib/routes';
 
+import { client } from '@/sanity/lib/client';
 export interface CommentForm {
   name: string;
   email: string;
@@ -29,15 +29,7 @@ const defaultValues: CommentForm = {
   post_title: '',
 };
 
-const PostCommentForm = ({
-  postId,
-  slug,
-  post_title,
-}: {
-  postId: string;
-  slug: string;
-  post_title: string;
-}) => {
+const PostCommentForm = ({ postId }: { postId: string }) => {
   const [isPending, startTransition] = useTransition();
 
   const commentModalRef = useRef<ModalRefActions>(null);
@@ -49,19 +41,16 @@ const PostCommentForm = ({
   const onSubmit: SubmitHandler<CommentForm> = (data) => {
     startTransition(async () => {
       try {
-        const response = await axios.post('/api/post-comment', {
-          ...data,
-          _id: postId,
-          post_title,
-          slug,
-        });
-
-        if (response.status !== 200) {
-          throw new Error(response.data.message || 'Failed to submit comment');
-        }
-
-        await axios.post('/api/revalidate', {
-          path: routes.post(slug),
+        await client.create({
+          _type: 'comment',
+          post: {
+            _type: 'reference',
+            _ref: postId,
+          },
+          name: data.name,
+          email: data.email,
+          comment: data.comment,
+          status: data.status,
         });
 
         toast.success('Comment submitted successfully');
@@ -87,11 +76,7 @@ const PostCommentForm = ({
     <>
       <Modal
         ref={commentModalRef}
-        trigger={
-          <Button>
-            Leave a comment <span></span>
-          </Button>
-        }
+        trigger={<Button>Leave a comment</Button>}
         disableEscapeDown
         disableOutsideClick
         hideCloseButton

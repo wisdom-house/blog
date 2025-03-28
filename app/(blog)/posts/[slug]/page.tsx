@@ -133,11 +133,7 @@ export default async function PostPage({ params }: Props) {
                 Comments {!!comments.length && `(${comments.length})`}
               </p>
 
-              <PostCommentForm
-                postId={post._id}
-                slug={post.slug as unknown as string}
-                post_title={post.title as string}
-              />
+              <PostCommentForm postId={post._id} />
             </div>
 
             <div className="mt-8">
