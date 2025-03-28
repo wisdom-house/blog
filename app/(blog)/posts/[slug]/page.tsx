@@ -12,10 +12,10 @@ import PostCommentForm from '@/components/forms/comment-form';
 import PortableText from '@/components/portable-text';
 import ShareToSocialMedia from '@/components/share-to-social';
 import ShowView from '@/components/show-view';
-
 import AdvertList from '@/components/advert-list';
 import GoBackButton from '@/components/buttons/go-back.button';
 import { Advert } from '@/components/cards/advert-card';
+
 import { routes } from '@/lib/routes';
 import { Comment, Post } from '@/sanity.types';
 import { sanityFetch } from '@/sanity/lib/fetch';
