@@ -1,34 +1,42 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import { type Metadata } from 'next';
+import { ThemeProvider } from 'next-themes';
+import { Kumbh_Sans } from 'next/font/google';
+import { SpeedInsights } from '@vercel/speed-insights/next';
+import { Analytics } from '@vercel/analytics/react';
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+import { pageTitle } from '@/utils/pageTitle';
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+import '@/styles/globals.css';
+import { Toaster } from 'sonner';
+
+const font = Kumbh_Sans({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '700'],
 });
 
 export const metadata: Metadata = {
-  title: "Wisdom House Blog",
-  description: "Stay tuned! Wisdom House Blog is coming soon with inspiring content and valuable insights.",
+  title: pageTitle(),
+
+  description:
+    'Stay informed and entertained with Wisdom House Blog! Discover the latest news, trending entertainment stories, captivating gossip, lifestyle tips, educational insights, and more. Your one-stop destination for diverse and engaging content.',
+
   icons: '/assets/logo.png',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${font.className} antialiased`}>
+        <ThemeProvider attribute="class">{children}</ThemeProvider>
+
+        <Toaster position="top-right" expand richColors />
+
+        <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );

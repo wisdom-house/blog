@@ -57,4 +57,4 @@ Follow these steps to set up the project:
 
 ## Note
 
-Crafting meaningful commit messages helps maintain clarity in the project's history. Review this [article](https://medium.com/swlh/writing-better-commit-messages-9b0b6ff60c67) for tips on writing better commit messages.
+Crafting meaningful commit messages helps maintain clarity in the project's history. Review this [article](https://www.conventionalcommits.org/en/v1.0.0/) for tips on writing better commit messages.
