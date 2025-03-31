@@ -2,9 +2,6 @@ name: Build app
 env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-  BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
-  BASE_URL: ${{ BRANCH_NAME }}
-  NEXT_PUBLIC_BASE_URL: ${{ BRANCH_NAME  }}
   SANITY_API_WRITE_TOKEN: ${{ secrets.SANITY_API_WRITE_TOKEN }}
   NEXT_PUBLIC_SANITY_API_WRITE_TOKEN: ${{ secrets.NEXT_PUBLIC_SANITY_API_WRITE_TOKEN }}
   SANITY_API_READ_TOKEN: ${{ secrets.SANITY_API_READ_TOKEN }}
@@ -20,6 +17,13 @@ jobs:
     steps:
       - name: Checkout repo code
         uses: actions/checkout@v3
+
+      - name: Set BRANCH_NAME
+        id: set_branch
+        run: |
+          echo "BRANCH_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
+          echo "BASE_URL=${GITHUB_REF##*/}" >> $GITHUB_ENV
+          echo "NEXT_PUBLIC_BASE_URL=${GITHUB_REF##*/}" >> $GITHUB_ENV
 
       - name: Use node 18
         uses: actions/setup-node@v3

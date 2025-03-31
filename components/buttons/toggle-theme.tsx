@@ -44,8 +44,8 @@ const ThemeToggler = ({ showOnDesktop }: IThemeToggleProps) => {
         <button
           aria-label="theme toggler"
           className={cn(
-            '!flex justify-self-end  items-end justify-center  gap-2 text-app-text group rounded-1/2 lg:hidden',
-            showOnDesktop && 'hidden lg:block'
+            'flex justify-self-end  items-end justify-center gap-2 text-app-text group rounded-1/2 lg:hidden',
+            showOnDesktop && 'hidden lg:flex'
           )}
         >
           <SvgIcon
