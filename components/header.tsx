@@ -64,7 +64,7 @@ const Header = () => {
   }, [pathname]);
 
   return (
-    <header className="sticky top-0 left-0 w-full backdrop-blur-3xl shadow-lg bg-app-foreground z-10 py-2 lg:pb-0">
+    <header className="sticky top-0 left-0 w-full backdrop-blur-3xl shadow-lg bg-app-foreground z-10 py-6">
       <nav className="app-padding flex w-full justify-between items-center">
         <Logo leftTop />
 
