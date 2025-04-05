@@ -133,16 +133,14 @@ const Hero = ({ posts }: HeroProps) => {
                 </div>
 
                 <div className="relative h-full w-full pt-16 pb-6 text-app-white font-bold">
-                  <div className="pt-24 md:pt-32 max-w-[650px]">
-                    {/* <p className="bg-app-foreground text-app-text text-a-12 rounded p-2 w-max mb-3">
-                      {category?.title}
-                    </p> */}
+                  <div className="pt-24 md:pt-32 max-w-[650px] bg-white/10 backdrop-blur-lg border border-white/20 shadow-lg rounded-2xl p-6">
+                    <p className="text-a-18 lg:text-a-40 line-clamp-2">
+                      {title}
+                    </p>
 
-                    <p className="text-a-18 lg:text-a-40">{title}</p>
+                    <p className=" line-clamp-2 my-2  ">{excerpt}</p>
 
-                    <p className=" line-clamp-3 my-2 ">{excerpt}</p>
-
-                    <p className="flex gap-[1ch] items-center my-4 text-a-12 font-light">
+                    <p className="flex gap-[1ch] items-center my-4 font-light">
                       <span className="font-bold">{author}</span>
                       <span>-</span>
                       <span>{dayjs(publishedAt).format(DATE_FORMAT)}</span>
