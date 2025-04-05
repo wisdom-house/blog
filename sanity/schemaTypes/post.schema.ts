@@ -78,7 +78,7 @@ export const postType = defineType({
       title: 'Excerpt',
       type: 'text',
       description: 'Brief summary of post.',
-      validation: (rule) => rule.required(),
+      validation: (rule) => rule.required().min(200),
     }),
   ],
 

@@ -50,10 +50,11 @@ export const categoriesQuery = /* groq */ `
 
 export const postsQuery = /* groq */ `
 {
-  "posts": *[_type == "post" && defined(slug.current)] | order(myPublishedAt desc) [$start...$end] {
+  "posts": *[_type == "post" && defined(slug.current) && myPublishedAt <= now()] 
+    | order(myPublishedAt desc) [$start...$end] {
     ${postFields}
   },
-  "total": count(*[_type == "post" && defined(slug.current)])
+  "total": count(*[_type == "post" && defined(slug.current) && myPublishedAt <= now()])
 }
 `;
 
